@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+         <link rel="stylesheet" href="{{url_for('static', filename='style.css') }}"/>
+    </head>
+
+    <body>
+        <div class="wd">
+            <h1>Welcome to Badger Bytes</h1>
+        </div>
+        <div class="box">
+            <ul type="none">
+            <li>HOME</li>
+            <li>MENU</li>
+            <li>ORDER</li>
+            <li>CONTACT</li>
+            <li>Log in</li>
+            <li>Sign up</li>
+            </ul>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+
+    </body>
+</html>
