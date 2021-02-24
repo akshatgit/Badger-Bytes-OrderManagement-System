@@ -1,3 +1,10 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: all .2s linear;
+}
+
 body{
     font-family: latha;
     color: white;
@@ -7,33 +14,63 @@ body{
     , url("1001.jpg")no-repeat;
     background-size: cover;
 }
-
-.box{
-    width: 900px;
-    float: right;
-    border: 1px solid black;
-}
-
-
-.box ul li{
-    width: 120px;
-    float: left;
-    margin: 10px auto;
+.navbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
     text-align: center;
 }
 
-.box ul li a{
-    text-decoration: none;
-    color: darkgray;
+.nav-button{
+    width: 200px;
+    height: 50px;
+    border: none;
+    border-radius: 8px;
+    color: black;
+    font-size: 18px;
+    outline: none;
 }
 
-.box ul li:hover{background-color: gray;}
-.box ul li a:hover{color: white;}
-
+.nav-button:hover{
+  box-shadow: inset 200px 0 0 0 gray;
+}
 
 .wd{
+    padding-top: 15px;
     text-align: center;
     font-family: fantasy;
     font-size: 30px;
 }
-            
+.alogin-box{
+    width:300px;
+    position: absolute;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    color: white;
+    padding-top: 100px;
+}
+.alogin-box h2{
+    float: left;
+    font-size: 30px;
+    border-bottom: 1px solid;
+    margin-bottom: 10px;
+    padding: 3px 0;
+}
+.textbox{
+    width: 100%;
+    overflow: hidden;
+    font-size: 20px;
+    padding: 10px 0;
+    margin: 10px 0;
+    border-bottom: 1px solid;
+}
+.alogin-button{
+    width: 80px;
+    height: 40px;
+    border-radius: 20px;
+    font-family: sans-serif;
+    outline: none;
+}

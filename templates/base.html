@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
          <link rel="stylesheet" href="{{url_for('static', filename='style.css') }}"/>
     </head>
 
@@ -8,15 +9,14 @@
         <div class="wd">
             <h1>Welcome to Badger Bytes</h1>
         </div>
-        <div class="box">
-            <ul type="none">
-            <li>HOME</li>
-            <li>MENU</li>
-            <li>ORDER</li>
-            <li>CONTACT</li>
-            <li>Log in</li>
-            <li>Sign up</li>
-            </ul>
+        <div class="navbar">
+            <button class="nav-button">HOME</button>
+            <button class="nav-button">MENU</button>
+            <button class="nav-button">ORDER</button>
+            <button class="nav-button">CONTACT</button>
+            <button class="nav-button">Log in</button>
+            <button class="nav-button">Sign up</button>
+            <button class="nav-button">Admin</button>
         </div>
 
         {% block content %}

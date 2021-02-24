@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, request, render_template
 app = Flask(__name__)
 
 
@@ -9,6 +9,10 @@ def index():
 @app.route('/signup')
 def signup():
     return render_template("signup.html")
+
+@app.route('/adminLogin')
+def adminLogin():
+    return render_template("adminLogin.html")
 
 if __name__ == '__main__':
     app.run()
