@@ -2,11 +2,13 @@
 # from flask import Blueprint, render_template
 # from flask_login import login_required, current_user
 
-from flask import render_template, request, redirect, url_for, abort, session
-from server import app, system
+from flask import render_template, request, redirect, url_for, abort, session, Blueprint
+from server import app
 from datetime import datetime
 from src.ingredient import Ingredient
 import sys
+from init import bootstrap_system 
+
 '''
 Website Structure:
 - Home page '/'
@@ -30,33 +32,33 @@ Website Structure:
 '''
 page for "page not found"
 '''
-@app.route('/404')
-@app.errorhandler(404)
-def page_not_found(e=None):
-    return render_template('404.html'), 404
+# @app.route('/404')
+# @app.errorhandler(404)
+# def page_not_found(e=None):
+#     return render_template('404.html'), 404
+
+customer = Blueprint('customer', __name__)
+admin = Blueprint('admin', __name__)
+system = bootstrap_system()
 
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/customer', methods=["GET", "POST"])
+@customer.route('/customer', methods=["GET", "POST"])
 def home_page():
     print(session)
-    if request.method == 'POST': 
-        if request.form["button"] == "make_new_order":
-            order_id = system.make_order()
-            session['order_ID'] = order_id
-            return redirect('/customer/menu/Mains')
-        elif request.form["button"] == "continue_order":
-            return redirect('/customer/menu/Mains')
-        elif request.form["button"] == "search_order":
-            return redirect(url_for('search_order', order_id=request.form['order_id']))
-        elif request.form["button"] == "staff":
-            return redirect(url_for('staff_homepage'))
+    # if request.method == 'POST': 
+    #     if request.form["button"] == "make_new_order":
+    order_id = system.make_order()
+    session['order_ID'] = order_id
+    #         return redirect('/customer/menu/Mains')
+    #     elif request.form["button"] == "continue_order":
+    #         return redirect('/customer/menu/Mains')
+    #     elif request.form["button"] == "search_order":
+    #         return redirect(url_for('search_order', order_id=request.form['order_id']))
+    #     elif request.form["button"] == "staff":
+    #         return redirect(url_for('staff_homepage'))
 
-    return render_template('home_page.html', system=system)
+    return render_template('new_order.html', system=system)
 
 
 '''
@@ -72,7 +74,7 @@ def check_order_in_session():
         return render_template("error.html", error="Sorry, your order ID is no longer valid.")
 
 
-@app.route('/customer/menu/<menu_name>', methods=["GET", "POST"])
+@customer.route('/customer/menu/<menu_name>', methods=["GET", "POST"])
 def display_menu(menu_name):
     check_order_in_session()
     
@@ -85,7 +87,7 @@ def display_menu(menu_name):
                 system.add_items_in_orders(session['order_ID'], item)
         elif "mod_btn" in request.form.keys():
             item = system.get_item(request.form["mod_btn"])
-            return redirect(url_for("modify_mains", item_name=item.name))
+            return redirect(url_for("customer.modify_mains", item_name=item.name))
     
     menu = system.get_menu(menu_name)
     if not menu:
@@ -95,7 +97,7 @@ def display_menu(menu_name):
     return render_template('customer_menus.html', menu_name=menu_name, menu=menu.display(), inventory=system.inventory)
     
 
-@app.route('/customer/creation/<item_name>', methods=["GET", "POST"])
+@customer.route('/customer/creation/<item_name>', methods=["GET", "POST"])
 def modify_mains(item_name):
     check_order_in_session()
     
@@ -122,7 +124,7 @@ def modify_mains(item_name):
     return render_template("customer_mains_creation.html", item=item, inventory=system.inventory, error=item._errors)
 
 
-@app.route('/customer/review', methods=["GET", "POST"])
+@customer.route('/customer/review', methods=["GET", "POST"])
 def review_order():
     check_order_in_session()
 
@@ -141,7 +143,7 @@ def review_order():
     return render_template('customer_review_order.html', order=order)
 
 
-@app.route('/customer/order/<order_id>')
+@customer.route('/customer/order/<order_id>')
 def search_order(order_id):
     return render_template('customer_search_order_result.html', order=system.get_order(int(order_id)))
 
@@ -149,7 +151,7 @@ def search_order(order_id):
 '''
 Staff pages:
 '''
-@app.route('/staff')
+@admin.route('/staff')
 def staff_homepage():
     if system.is_authenticated:
         return redirect(url_for('staff_order'))
@@ -157,7 +159,7 @@ def staff_homepage():
         return redirect(url_for('staff_login'))
 
 
-@app.route('/staff/login', methods=["GET", "POST"])
+@admin.route('/staff/login', methods=["GET", "POST"])
 def staff_login():
 
     if request.method == 'POST':
@@ -173,13 +175,13 @@ def staff_login():
     return render_template('staff_login.html', username=None, error=None)
 
 
-@app.route('/staff/logout')
+@admin.route('/staff/logout')
 def staff_logout():
     system.staff_logout()
     return redirect(url_for('home_page'))
 
 
-@app.route('/staff/order', methods=["GET", "POST"])
+@admin.route('/staff/order', methods=["GET", "POST"])
 def staff_order():
     if not system.is_authenticated:
         return redirect(url_for('staff_login')) 
@@ -192,7 +194,7 @@ def staff_order():
     return render_template('staff_order.html', system=system)
 
 
-@app.route('/staff/inventory', methods=["GET", "POST"])
+@admin.route('/staff/inventory', methods=["GET", "POST"])
 def staff_inventory():
     if not system.is_authenticated:
         return redirect(url_for('staff_login'))

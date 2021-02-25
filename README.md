@@ -59,3 +59,11 @@ python3 -m venv en
  ```bash
 deactivate
 ```
+
+## Seeing All Data
+```python
+from server import db, app
+from models import User
+app.app_context().push()
+User.query.all()
+```

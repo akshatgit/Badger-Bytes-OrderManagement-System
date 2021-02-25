@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 {% block body %}
-<div class="pure-u-1 main_content">
-    <p align="center">
-        {{ error }}
-    </p>
-</div>
+<article class="message is-info">
+    <div class="message-header">
+      Error!
+      <!-- <button class="delete"></button> -->
+    </div>
+    <div class="message-body">
+        {{error}}
+    </div>
+  </article>
 {% endblock %}
