@@ -42,28 +42,7 @@ admin = Blueprint('admin', __name__)
 system = bootstrap_system()
 
 
-# The Admin page requires an 'Admin' role.
-@app.route('/profile', methods=['GET', 'POST'])
-def updateProfile():
-    form = ProfileForm()
-    if form.validate_on_submit():
-        current_user.name = form.name.data
-        current_user.phone = form.phone.data
-        current_user.adress = form.adress.data
-        current_user.plateNum = form.plateNum.data
-        current_user.carDescription = form.carDescription.data
-
-        db.session.commit()
-        return redirect(url_for('updateProfile'))
-
-    elif request.method == 'GET':
-        form.name.data = current_user.name
-        form.phone.data = current_user.phone
-        form.adress.data = current_user.adress
-        form.plateNum.data = current_user.plateNum
-        form.carDescription.data = current_user.carDescription
-
-    return render_template('profile.html', form=form)
+# The Admin page requires an 'Admin' role
 
 
 @customer.route('/customer', methods=["GET", "POST"])

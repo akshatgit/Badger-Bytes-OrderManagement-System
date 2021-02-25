@@ -2,7 +2,7 @@
 
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from models import User
 from server import db
 
@@ -13,10 +13,25 @@ auth = Blueprint('auth', __name__)
 def login():
     return render_template('login.html')
 
+@auth.route('/settingspage')
+@login_required
+def settingspage():
+    return render_template('settings.html')
+
+
 @auth.route('/settings')
 @login_required
 def settings():
-    return render_template('settings.html')
+    form = ProfileForm()
+    if form.validate_on_submit():
+        current_user.name = form.name.data
+        current_user.phone = form.phone.data
+        current_user.adress = form.adress.data
+        current_user.plateNum = form.plateNum.data
+        current_user.carDescription = form.carDescription.data
+
+        db.session.commit()
+    return render_template('profile.html', name=current_user.name)
 
 @auth.route('/login', methods=['POST'])
 def login_post():
