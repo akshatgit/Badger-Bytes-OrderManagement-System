@@ -2,7 +2,7 @@
 
 ## Project Structure
 
-```bash
+```
 ├── LICENSE
 ├── README.md
 ├── __init__.py
@@ -37,25 +37,3 @@ Core:
  Templates:
 
  - Jinja templates for UI
-
- ## Dev Setup
- - Install Virtualenv
- ```bash
- sudo pip3 install virtualenv
- ```
- - Create virtualenv folder
- ```bash
-python3 -m venv en
- ```
- Activate Virtualenv
- ```bash
- source env/bin/activate
- ```
- Install requirements
- ```bash
- pip3 install -r requirements.txt
- ```
- Deactivate Virtualenv
- ```bash
-deactivate
-```
