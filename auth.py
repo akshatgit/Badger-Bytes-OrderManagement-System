@@ -55,8 +55,7 @@ def signup_post():
     role = request.form.get('User')
     address = request.form.get('Address')
     phone = request.form.get('Phone Number')
-    name = request.form.get('name') #--------------------------------------------------------- don't need
-    password = request.form.get('password')
+
 
     user = User.query.filter_by(email=email).first() # if this returns a user, then the email already exists in database
 
@@ -301,3 +300,4 @@ def period_revenue(self, d1, d2):
                 WHERE date(order.checkoutTime) BETWEEN :x AND :y;""")
     result = session.connection().execute(revenue,  x=d1, y=d2).fetchall()
     return result    
+    return redirect(url_for('main.index'))
