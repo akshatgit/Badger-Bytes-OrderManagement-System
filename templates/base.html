@@ -29,6 +29,20 @@
                                 Create New Order
                             </a>
                             {% endif %}
+
+                            {% if current_user.role == "staff" %}
+                            <a href="{{ url_for('staff.home_page') }}" class="navbar-item">
+                                Staff
+                            </a>
+                            {% endif %}
+
+                            <!-- TODO
+                                 {% if current_user.role == "admin" %}
+                            <a href="{{ url_for('admin.home_page') }}" class="navbar-item">
+                                Admin
+                            </a>
+                            {% endif %} -->
+
                             <a href="{{ url_for('auth.settings') }}" class="navbar-item">
                                 Settings
                             </a>
