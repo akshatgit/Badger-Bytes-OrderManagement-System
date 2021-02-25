@@ -14,10 +14,13 @@ class User(db.Model):
     phonenumber = db.Column(db.String(20), nullable=False, server_default='')
     address = db.Clomn(db.String(20), nullable=False, server_default='')
     payment = db.Clomn(db.String(20), nullable=False, server_default='')
+    plateNum = db.Column(db.String(10), nullable=True, server_default='')
+    carDescription = db.Column(db.String(100), nullable=True, server_default='color and band')
     role_id = db.Column(db.Integer, db.ForeignKey("roles.id"))
 
-    def __init__(self,email,password):
+    def __init__(self,email, username, password):
         self.email = email
+        self.username = username
         self.password_hash = generate_password_hash(password)
 
     
@@ -30,38 +33,45 @@ class Role(db.Model):
     # Relationships
     users = db.relationship('User', backref='role')
 
-class Menu(db.Model):
+class MenuItem(db.Model):
+    __tablename__ = 'menu_item'
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False, unique=True)
-    price = db.Column(db.Integer, nullable=False, server_default=0)
-    availability = db.Column(db.Boolean, nullable=False, server_default=True)
+    price = db.Column(db.Numeric(5,2), nullable=False, server_default=0.00)
+    stock = db.Column(db.Integer, nullable=False, server_default=10)
+    category = db.Column(db.String(20), nullable=False, server_default='')
     picture = db.Clomn(db.String(60), nullable=False, server_default='default.jpg')
 
     def __init__(self,name,price, availability, picture):
         self.name = name
         self.price = price
-        self.availability = availability
-        self.picture = picture
+        self.stock = stock
+        
+class Order(db.Model):
+    orderId = db.Column(db.Integer(), primary_key=True)
+    userId = db.Column(db.Integer(), ForeignKey('user.id'))
+    checkoutTime = db.Column(db.DateTime, nullable=False, server_default=datetime.utcnow)
+    pickup = db.Column(db.Boolean, nullable=False, server_default=False)
+    pickupTime = db.Column(db.DateTime, nullable=True, server_default=datetime.utcnow)
+    orderStatus = db.Column(db.String(30), nullable=False, server_default='Preparing')
+    bill_amount = db.Column(db.Numeric(8,2), nullable=False, server_default=0.00)
     
+    def __init__(self, userId):
+        self.userId = userId
+    
+    
+class OrderItem(db.Model):       
+    __tablename__ = 'order_items'
+    id = db.Column(db.Integer(), primary_key=True)
+    order_id = db.Column(db.Integer(), ForeignKey('order.id', ondelete='CASCADE'))
+    food_id = db.Column(db.Integer(), ForeignKey('menu_item.id', ondelete='CASCADE'))  
+    food_qty = db.Column(db.Integer(), nullable=False, server_default=0)
+    
+    items = db.relationship('MenuItem', backref='menu_item')
 
-# The Admin page requires an 'Admin' role.
-    @app.route('/admin/modifyMenu')
-    @roles_required('Admin')    # Use of @roles_required decorator
-    def newMenu():
-        restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-        owner = getUserInfo(restaurant.user_id)
-        if owner.id != login_session['user_id']:
-            flash('You do not have access to edit %s.' % restaurant.name)
-            return redirect(url_for('showRestaurants'))
-        if request.method == 'POST':
-            newItem = MenuItem(
-            name = request.form['name'].strip(),
-            description = request.form['description'].strip(),
-            course = request.form['course'].strip(),
-            price = request.form['price'].strip(),
-            restaurant_id = restaurant.id)
-            session.add(newItem)
-            session.commit()
-            flash('Menu item ' + '"' + newItem.name + '"' + ' created.')
-            return redirect(url_for('showMenu', restaurant_id=restaurant_id))
-        else:
-            return render_template('_page.html', title='New Menu Item', view='newMenuItem', restaurant=restaurant)
+    def __init__(self, order_id, food_id, food_qty):
+        self.order_id = order_id
+        self.food_id = food_id
+        self.food_qty = food_qty
+
+   

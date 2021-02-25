@@ -14,17 +14,29 @@ class UpdateAccountForm():
             if user:
                 raise ValidationError('That username is taken. Please choose another one')
 
-class UpdateProfileForm():
+class ProfileForm():
     firstname = StringField('First Name',validators=[InputRequired(),Length(min=2, max=20)])
     lastname = StringField('Last Name',validators=[InputRequired(),Length(min=2, max=20)])
     phonenumber = StringField('Phone Number',validators=[InputRequired(), ])
     adress = TextAreaField('Adress',validators=[InputRequired(), Length(max=200)])
+    plateNum = StringField('Car Plate Num',validators=[InputRequired(),Length(min=2, max=20)])
+    carDescription = TextAreaField('Car Description',validators=[InputRequired(), Length(max=500)])
     submit = SubmitField('Update')
     
 class MenuForm(FlaskForm):
     name = StringField('Name',validators=[InputRequired(),Length(min=2, max=30)])
-    price = DecimalField('Price',validators=[InputRequired(),Length(min=2, max=20)])
+    price = DecimalField('Price',validators=[InputRequired()])
     stock = IntegerField('Stock', validators=[InputRequired()])
+    category = StringField('Ccategory',validators=[InputRequired(),Length(min=2, max=30)])
     picture = FileField('Update Menu Picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
+    
+class OrderForm(FlaskForm):
+    pickup = BooleanField('Pick Up', default=False,validators=[InputRequired(),Length(min=2, max=30)])
+    pickupTime = DateTimeField('Pickup Time', format='%Y-%m-%d %H:%M:%S')
+    plateNum = StringField('Car Plate Num')
+    carDescription = StringField('Car Description')
+    bill_amount = DecimalField('Bill Amount',validators=[InputRequired()])
+    payMethod = SelectField('Pay Method', choices=[('PayPal', 'PayPal'), ('ApplePay', 'ApplePay'), ('Stripe', 'Stripe')])
+    submit = SubmitField('Submit')
 
