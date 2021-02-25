@@ -38,7 +38,7 @@ page for "page not found"
 #     return render_template('404.html'), 404
 
 customer = Blueprint('customer', __name__)
-admin = Blueprint('admin', __name__)
+staff = Blueprint('staff', __name__)
 system = bootstrap_system()
 
 
@@ -151,7 +151,7 @@ def search_order(order_id):
 '''
 Staff pages:
 '''
-@admin.route('/staff')
+@staff.route('/staff')
 def staff_homepage():
     if system.is_authenticated:
         return redirect(url_for('staff_order'))
@@ -159,7 +159,7 @@ def staff_homepage():
         return redirect(url_for('staff_login'))
 
 
-@admin.route('/staff/login', methods=["GET", "POST"])
+@staff.route('/staff/login', methods=["GET", "POST"])
 def staff_login():
 
     if request.method == 'POST':
@@ -175,13 +175,13 @@ def staff_login():
     return render_template('staff_login.html', username=None, error=None)
 
 
-@admin.route('/staff/logout')
+@staff.route('/staff/logout')
 def staff_logout():
     system.staff_logout()
     return redirect(url_for('home_page'))
 
 
-@admin.route('/staff/order', methods=["GET", "POST"])
+@staff.route('/staff/order', methods=["GET", "POST"])
 def staff_order():
     if not system.is_authenticated:
         return redirect(url_for('staff_login')) 
@@ -194,7 +194,7 @@ def staff_order():
     return render_template('staff_order.html', system=system)
 
 
-@admin.route('/staff/inventory', methods=["GET", "POST"])
+@staff.route('/staff/inventory', methods=["GET", "POST"])
 def staff_inventory():
     if not system.is_authenticated:
         return redirect(url_for('staff_login'))

@@ -38,8 +38,8 @@ app.register_blueprint(main_blueprint)
 from routes import customer as customer_blueprint
 app.register_blueprint(customer_blueprint)
 
-from routes import admin as admin_blueprint
-app.register_blueprint(admin_blueprint)
+from routes import staff as staff_blueprint
+app.register_blueprint(staff_blueprint)
 
 
 # app.secret_key = 'very-secret-123'  # Used to add entropy

@@ -24,10 +24,11 @@
                         <div class="navbar-end">
                             {% if current_user.is_authenticated %}
                             
-                        
+                            {% if current_user.role == "customer" %}
                             <a href="{{ url_for('customer.home_page') }}" class="navbar-item">
                                 Create New Order
                             </a>
+                            {% endif %}
                             <a href="{{ url_for('auth.settings') }}" class="navbar-item">
                                 Settings
                             </a>
@@ -55,8 +56,10 @@
         </div>
 
         <div class="hero-body">
+            {% if current_user.role == "customer" %}
             {% block menu %}
             {% endblock %}
+            {% endif %}
 
             <div class="container has-text-centered">
                {% block content %}
