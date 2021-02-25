@@ -21,6 +21,7 @@ class Staff(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(50), unique=True)
 
+<<<<<<< Updated upstream
 class Order(db.Model):
     orderId = db.Column(db.Integer(), primary_key=True)
     userId = db.Column(db.Integer(), ForeignKey('user.id'))
@@ -32,3 +33,5 @@ class Order(db.Model):
     
     def __init__(self, userId):
         self.userId = userId
+=======
+>>>>>>> Stashed changes
