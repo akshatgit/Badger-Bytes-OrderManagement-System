@@ -7,13 +7,11 @@
 {% if current_user.is_authenticated %}
 <div class="container">
     <div class="columns">
-        <div class="column is-3 ">
+        <div >
             <aside class="menu is-hidden-mobile">
                 <ul class="menu-list">
-                    <li class="menu-item">
-                    <a href="{{ url_for('customer.review_order') }}" class="navbar-item">
-                        My Order
-                    </a>
+                    <li ></li>
+                    <a href="{{ url_for('customer.review_order') }}" class="navbar-item">My Order</a>
                     </li>
                     <li class="menu-item">
                         <a href="{{ url_for('customer.display_menu', menu_name='Mains') }}" class="navbar-item"> Mains</a>
