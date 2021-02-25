@@ -153,38 +153,34 @@ Staff pages:
 '''
 @staff.route('/staff')
 def staff_homepage():
-    if system.is_authenticated:
-        return redirect(url_for('staff_order'))
-    else:
-        return redirect(url_for('staff_login'))
+    return redirect(url_for('staff.staff_order'))
 
 
-@staff.route('/staff/login', methods=["GET", "POST"])
-def staff_login():
 
-    if request.method == 'POST':
-        if request.form['button'] == "login":
-            if system.staff_login(request.form['username'], request.form['password']):
-                return redirect(url_for('staff_order'))
-            else:
-                return render_template('staff_login.html', username=request.form['username'], error=True)
+# @staff.route('/staff/login', methods=["GET", "POST"])
+# def staff_login():
+
+#     if request.method == 'POST':
+#         if request.form['button'] == "login":
+#             if system.staff_login(request.form['username'], request.form['password']):
+#                 return redirect(url_for('staff_order'))
+#             else:
+#                 return render_template('staff_login.html', username=request.form['username'], error=True)
         
-        elif request.form['button'] == "cancel":
-            return redirect(url_for('home_page')) 
+#         elif request.form['button'] == "cancel":
+#             return redirect(url_for('home_page')) 
     
-    return render_template('staff_login.html', username=None, error=None)
+#     return render_template('staff_login.html', username=None, error=None)
 
 
-@staff.route('/staff/logout')
-def staff_logout():
-    system.staff_logout()
-    return redirect(url_for('home_page'))
+# @staff.route('/staff/logout')
+# def staff_logout():
+#     system.staff_logout()
+#     return redirect(url_for('home_page'))
 
 
 @staff.route('/staff/order', methods=["GET", "POST"])
 def staff_order():
-    if not system.is_authenticated:
-        return redirect(url_for('staff_login')) 
 
     if request.method == 'POST':
         order_id = int(request.form['button'])
@@ -196,8 +192,6 @@ def staff_order():
 
 @staff.route('/staff/inventory', methods=["GET", "POST"])
 def staff_inventory():
-    if not system.is_authenticated:
-        return redirect(url_for('staff_login'))
     
     if request.method == 'POST':
         for name, amount in request.form.items():

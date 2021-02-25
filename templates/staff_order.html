@@ -1,12 +1,12 @@
 {% extends 'staff_base.html' %}
 {% block staff_block %}
-<div class="pure-u-1-2">
+<div >
 <h3>Current Orders:</h3>
 <form method="POST">
     <ul>
     {% for order in system.pending_orders %}
         {% if order.is_payed %}
-            <div class="pure-u-1-4">
+            <div class="box">
             <li> {{ order }} <br>
             {% for item_list in order.items.values() %}
                 {% for item in item_list %}
