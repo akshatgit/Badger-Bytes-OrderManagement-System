@@ -1,77 +1,42 @@
 # models.py
 
 from flask_login import UserMixin
-from . import db
-from flask_user import current_user, login_required, roles_required, UserManager, UserMixin
+from server import db
+import typing
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
-    email = db.Column(db.String(255, collation='NOCASE'), nullable=False, unique=True)
-    username = db.Column(db.String(50), nullable=False, unique=True)
+    email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
-    firstname = db.Column(db.String(100), nullable=False, server_default='')
-    lastname = db.Column(db.String(100), nullable=False, server_default='')
-    phonenumber = db.Column(db.String(20), nullable=False, server_default='')
-    address = db.Clomn(db.String(20), nullable=False, server_default='')
-    payment = db.Clomn(db.String(20), nullable=False, server_default='')
+    role = db.Column(db.String(100), default="customer")
+    phone = db.Column(db.String(100), nullable=True)
+    address = db.Column(db.String(1000), nullable=True)
+    name = db.Column(db.String(1000))
+    payment = db.Column(db.String(20), nullable=False, server_default='')
     plateNum = db.Column(db.String(10), nullable=True, server_default='')
     carDescription = db.Column(db.String(100), nullable=True, server_default='color and band')
-    role_id = db.Column(db.Integer, db.ForeignKey("roles.id"))
-
-    def __init__(self,email, username, password):
-        self.email = email
-        self.username = username
-        self.password_hash = generate_password_hash(password)
-
     
+    def _repr(self, **fields: typing.Dict[str, typing.Any]) -> str:
+        '''
+        Helper for __repr__
+        '''
+        field_strings = []
+        at_least_one_attached_attribute = False
+        for key, field in fields.items():
+            try:
+                field_strings.append(f'{key}={field!r}')
+            except sa.orm.exc.DetachedInstanceError:
+                field_strings.append(f'{key}=DetachedInstanceError')
+            else:
+                at_least_one_attached_attribute = True
+        if at_least_one_attached_attribute:
+            return f"<{self.__class__.__name__}({','.join(field_strings)})>"
+        return f"<{self.__class__.__name__} {id(self)}>"
 
-# Define the Role data model
-class Role(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(50), unique=True)
+    def __repr__(self):
+        return self._repr(id=self.id,
+                          user=self.name,
+                          email=self.email,
+                          phone=self.phone)
+        # return '<Name %r, email %r, phone %r, role %r, address %r, >' % self.name, self.email, self.phone, self.role, self.address
 
-    # Relationships
-    users = db.relationship('User', backref='role')
-
-class MenuItem(db.Model):
-    __tablename__ = 'menu_item'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False, unique=True)
-    price = db.Column(db.Numeric(5,2), nullable=False, server_default=0.00)
-    stock = db.Column(db.Integer, nullable=False, server_default=10)
-    category = db.Column(db.String(20), nullable=False, server_default='')
-    picture = db.Clomn(db.String(60), nullable=False, server_default='default.jpg')
-
-    def __init__(self,name,price, availability, picture):
-        self.name = name
-        self.price = price
-        self.stock = stock
-        
-class Order(db.Model):
-    orderId = db.Column(db.Integer(), primary_key=True)
-    userId = db.Column(db.Integer(), ForeignKey('user.id'))
-    checkoutTime = db.Column(db.DateTime, nullable=False, server_default=datetime.utcnow)
-    pickup = db.Column(db.Boolean, nullable=False, server_default=False)
-    pickupTime = db.Column(db.DateTime, nullable=True, server_default=datetime.utcnow)
-    orderStatus = db.Column(db.String(30), nullable=False, server_default='Preparing')
-    bill_amount = db.Column(db.Numeric(8,2), nullable=False, server_default=0.00)
-    
-    def __init__(self, userId):
-        self.userId = userId
-    
-    
-class OrderItem(db.Model):       
-    __tablename__ = 'order_items'
-    id = db.Column(db.Integer(), primary_key=True)
-    order_id = db.Column(db.Integer(), ForeignKey('order.id', ondelete='CASCADE'))
-    food_id = db.Column(db.Integer(), ForeignKey('menu_item.id', ondelete='CASCADE'))  
-    food_qty = db.Column(db.Integer(), nullable=False, server_default=0)
-    
-    items = db.relationship('MenuItem', backref='menu_item')
-
-    def __init__(self, order_id, food_id, food_qty):
-        self.order_id = order_id
-        self.food_id = food_id
-        self.food_qty = food_qty
-
-   
