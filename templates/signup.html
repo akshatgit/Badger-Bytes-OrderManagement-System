@@ -1,0 +1,64 @@
+<!-- templates/signup.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Sign Up</h3>
+    <div class="box" style="width: 400px;">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+            </div>
+        {% endif %}
+        {% endwith %}
+        <form method="POST" action="/signup">
+
+             <!-- <label for="Users">Choose a user account:</label> -->
+            <div class="select">
+            <select name="User" id="usertype">
+              <option value="customer">Customer</option>
+              <option value="admin">Administrator</option>
+            <option value="staff">Restraunt staff</option>
+            </select>
+            </div>
+
+            <br><br>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="name" placeholder="Name" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="Address" placeholder="Address" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="tel" name="Phone Number" autofocus="" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required placeholder="123-456-7890">
+                </div>
+            </div>
+
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="password" name="password" placeholder="Password">
+                </div>
+            </div>
+
+            <button class="button is-block is-info is-large is-fullwidth">Sign Up</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

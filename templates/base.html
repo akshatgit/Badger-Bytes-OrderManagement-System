@@ -1,0 +1,99 @@
+<!-- templates/base.html -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Badger Bytes</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+</head>
+
+<body>
+
+
+    <section class="hero is-small is-primary">
+ 
+        <div class="hero-head">
+            <nav class="navbar">
+                <div class="container">                  
+                    <div id="navbarMenuHeroA" class="navbar-menu">
+                        <!-- <h3 class="title ">Welcome to Badger Bytes!!</h3> -->
+                        <div class="navbar-end">
+                            {% if current_user.is_authenticated %}
+                            
+                            {% if current_user.role == "customer" %}
+                            <a href="{{ url_for('customer.home_page') }}" class="navbar-item">
+                                Create New Order
+                            </a>
+                            {% endif %}
+
+                            {% if current_user.role == "staff" %}
+                            <a href="{{ url_for('staff.staff_homepage') }}" class="navbar-item">
+                                Staff
+                            </a>
+                            {% endif %}
+
+                            <!-- TODO
+                                 {% if current_user.role == "admin" %}
+                            <a href="{{ url_for('admin.home_page') }}" class="navbar-item">
+                                Admin
+                            </a>
+                            {% endif %} -->
+
+                            <a href="{{ url_for('auth.settings') }}" class="navbar-item">
+                                Settings
+                            </a>
+                            <a href="{{ url_for('main.profile') }}" class="navbar-item">
+                                Profile
+                            </a>
+                            {% endif %}
+                            {% if not current_user.is_authenticated %}
+                            <a href="{{ url_for('auth.login') }}" class="navbar-item">
+                                Login
+                            </a>
+                            <a href="{{ url_for('auth.signup') }}" class="navbar-item">
+                                Sign Up
+                            </a>
+                            {% endif %}
+                            {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('auth.logout') }}" class="navbar-item">
+                                Logout
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+    <div>
+    {% if current_user.role == "customer" or current_user.role == "staff" %}
+            {% block menu %}
+            {% endblock %}
+            {% endif %}
+
+        <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='spike.css') }}">
+        </head>
+        <body background="{{ url_for('static', filename='1001.jpg') }}">
+
+           <div class="is-justify-content-center">
+
+            <div class="container has-text-centered">
+               {% block content %}
+               {% endblock %}
+               {% block body %}
+               {% endblock %}
+            </div>
+        </div>
+        </body>
+        </div>
+    </section>
+
+</body>
+
+</html>

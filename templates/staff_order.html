@@ -1,0 +1,120 @@
+{% extends 'staff_base.html' %}
+{% block staff_block %}
+<!-- <div >
+<h3>Current Orders:</h3>
+<form method="POST">
+    <ul>
+    {% for order in system.pending_orders %}
+        {% if order.is_payed %}
+            <div class="box">
+            <li> {{ order }} <br>
+            {% for item_list in order.items.values() %}
+                {% for item in item_list %}
+                {% if item.type == "Mains" %} 
+                    {{ item.name }} <br>
+                    {% for ingredient_type in item.ingredientsDict.keys() %}
+                        {% for ingredient in item.ingredientsDict[ingredient_type].values() %}
+                            {% if ingredient.amount|int != 0 %}
+                            - {{ingredient.name}}: {{ingredient.amount}} <br>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    - {{ item.name }} <br>
+                {% endif %}
+                {% endfor %} 
+            {% endfor %}
+            </div>
+            <div class="pure-u-1-8">
+            <button name='button' type='submit' value={{ order.order_id }} class="pure-button">
+                <i class="far fa-check-square"></i> 
+            </button> 
+            </div>
+        </li> 
+        {% endif %}
+    {% endfor %}
+    </ul>
+</form>
+</div> -->
+
+
+
+
+
+                    <div class="column is-9">
+                        <div class="card events-card">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Current Orders
+                                </p>
+                                <a href="#" class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </a>
+                            </header>
+                            <div class="card-table">
+                                <div class="content">
+                                    <table class="table is-fullwidth is-striped">
+                                        <tbody>
+                                            {% for order in system.pending_orders %}
+                                            <form method="POST" >
+                                            <tr>                                                     
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>{{order}}</td>
+                                                <td><button class="button is-small is-primary"  name='button' type='submit' value={{ order.order_id }}>Complete Order</button></td>
+                                                <!-- <td class="level-right"><a class="button is-small is-primary" value={{ order.order_id }} href="#">Complete Order</a></td> -->
+                                            </tr>
+                                            </form>
+                                            {%endfor%}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <footer class="card-footer">
+                                <a href="#" class="card-footer-item">View All</a>
+                            </footer>
+                        </div>
+                    </div>
+
+
+                    <div class="columns">
+                        <div class="column is-9">
+                            <div class="card events-card">
+                                <header class="card-header">
+                                    <p class="card-header-title">
+                                        Completed Orders:
+                                    </p>
+                                    <a href="#" class="card-header-icon" aria-label="more options">
+                      <span class="icon">
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      </span>
+                    </a>
+                                </header>
+                                <div class="card-table">
+                                    <div class="content">
+                                        <table class="table is-fullwidth is-striped">
+                                            <tbody>
+                                                {% for order in system.completed_orders %}
+                                                <tr>                                                     
+                                                    <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                    <td>{{order}}</td>
+                                                        <!-- <td class="level-right" ><a class="button is-small is-primary" >Complete Order</a></td> -->
+                                                </tr>
+                                                {%endfor%}
+    
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <footer class="card-footer">
+                                    <a href="#" class="card-footer-item">View All</a>
+                                </footer>
+                            </div>
+                        </div>
+
+
+
+
+{% endblock %}
