@@ -8,6 +8,8 @@ from datetime import datetime
 from src.ingredient import Ingredient
 import sys
 from init import bootstrap_system 
+import pickle
+system = bootstrap_system()
 
 '''
 Website Structure:
@@ -26,6 +28,11 @@ Website Structure:
     - Logout '/staff/logout'
     - Order '/staff/order'
     - Inventory '/staff/inventory'
+-#Admin '/admin'
+    - Homepage (redirects to newmenu)'/admin'
+    - Create new menu'/admin/newmenu'
+    - Modify menu '/admin/modify'
+    - Usage reports '/admin/usage'
 '''
 
 
@@ -39,6 +46,7 @@ page for "page not found"
 
 customer = Blueprint('customer', __name__)
 staff = Blueprint('staff', __name__)
+admin = Blueprint('admin', __name__)
 system = bootstrap_system()
 
 
@@ -201,3 +209,107 @@ def staff_inventory():
         system.save_state()
     
     return render_template('staff_inventory.html', system=system)
+
+
+
+
+
+
+
+
+'''
+Admin pages:
+'''
+
+
+@admin.route('/admin', methods=["GET"])
+def admin_home_page():
+    return redirect(url_for('admin.admin_newmenu'))
+
+'''--------------------------------------------------------------------------'''
+
+
+@admin.route('/admin/showMenu', methods=["GET", "POST"])
+def admin_showMenu():
+    return redirect(url_for('admin.admin_newmenu'))
+
+
+
+@admin.route('/admin/newmenu', methods=["GET", "POST"])
+def admin_newmenu(): 
+
+    # TODO: NEED TO INTEGRATE FRONTEND AND BACKEND
+
+
+    if request.method == 'POST':
+        newItem = MenuItem(name=request.form['name'], image=flask.request.files.get('image', ''), price=request.form[
+                               'price'], availability=request.form['availability'], user_id=admin.user_id)
+        session.add(newItem)
+        session.commit()
+        flash('New menu %s item has been successfully added' % (newItem.name))
+        return redirect(url_for('admin/admin_showMenu', restaurant_id=restaurant_id))
+    else:
+        return render_template('admin_newmenu.html')
+
+@admin.route('/admin/modify')
+def admin_modify():
+
+    # TODO FROM BELOW
+
+
+    '''
+    editedItem = session.query(menu_name).filter_by(id=menu_id).one()
+    if request.method == 'POST':
+        if request.form['name']:
+            editedItem.name = request.form['name']
+        if request.form['image']:
+            editedItem.image = flask.request.files.get('image', '')
+        if request.form['price']:
+            editedItem.price = request.form['price']
+        if request.form['availability']:
+            editedItem.course = request.form['availability']
+        session.add(editedItem)
+        session.commit()
+        flash('Menu item has been changed successfully.')
+        return redirect(url_for('admin/admin_showMenu'))
+    else:
+        return render_template('admin_modify.html', menu_id=menu_id, item=editedItem)
+        '''
+
+
+
+@admin.route('/admin/usage', methods=["GET", "POST"])
+def admin_usage():
+
+    # TODO FROM BELOW
+
+    '''
+    """Run and display various analytics reports."""
+
+    # with open('system_data.dat', 'wb') as f:
+    #     pickle.dump(data, f)
+    #     products = menu.query.all()
+    #     purchases = Purchase.query.all()
+    inputFile = open('system_data.dat', 'rb')
+    new_dict = pickle.load(inputFile)
+    purchases_by_day = new_dict()
+    for purchase in purchases:
+        purchase_date = purchase.sold_at.date().strftime('%m-%d')
+        if purchase_date not in purchases_by_day:
+            purchases_by_day[purchase_date] = {'units': 0, 'sales': 0.0}
+        purchases_by_day[purchase_date]['units'] += 1
+        purchases_by_day[purchase_date]['sales'] += purchase.product.price
+    purchase_days = sorted(purchases_by_day.keys())
+    units = len(purchases)
+    total_sales = sum([p.product.price for p in purchases])
+
+
+    return render_template('admin_usage.html',
+                            products=products,
+                            purchase_days=purchase_days,
+                            purchases=purchases,
+                            purchases_by_day=purchases_by_day,
+                            units=units,
+                            total_sales=total_sales)
+
+'''

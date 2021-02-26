@@ -37,12 +37,11 @@
                             </a>
                             {% endif %}
 
-                            <!-- TODO
-                                 {% if current_user.role == "admin" %}
-                            <a href="{{ url_for('admin.home_page') }}" class="navbar-item">
+                            {% if current_user.role == "admin" %}
+                            <a href="{{ url_for('admin.admin_home_page') }}" class="navbar-item">
                                 Admin
                             </a>
-                            {% endif %} -->
+                            {% endif %}
 
                             <a href="{{ url_for('auth.settings') }}" class="navbar-item">
                                 Settings
@@ -71,7 +70,7 @@
         </div>
 
     <div>
-    {% if current_user.role == "customer" or current_user.role == "staff" %}
+    {% if current_user.role == "customer" or current_user.role == "staff" or current_user.role == "admin" %}
             {% block menu %}
             {% endblock %}
             {% endif %}
