@@ -5,34 +5,16 @@
 {% block content %}
 
 <h1 class="title">
-  Welcome, {{ name }}!
+  Welcome, {{ current_user.name }}!
 </br>
-  User Information:
+  Details are as follows:
 </br>
-  Name: {{name}}
+  Name: {{current_user.name}}
 </br>
-  Phone: {{phone}}
+  Phone {{current_user.phone}}
 </br>
-  Email: {{email}}
+  Email: {{current_user.email}}
 </br>
-  Address: {{address}}
-</br>
+  Address: {{current_user.address}}
 </h1>
-
-<!-- <div class="content>" -->
-
-<!-- <p>Payment</p> -->
-<span class="tag is-primary is-medium"><b>Payment Method</b> </span>
-<!-- </div> -->
-  <!-- <label for="Payment">Choose a payment method:</label> -->
-  <div class="select">
-
-            <select name="payment" id="payment">
-              <option value="Customer">Paypal</option>
-              <option value="Admin">Strip</option>
-              <option value="Restraunt Staff">Apple Pay</option>
-             
-            </select>
-          </div>
-
 {% endblock %}

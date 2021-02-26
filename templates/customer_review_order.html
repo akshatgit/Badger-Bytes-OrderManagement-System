@@ -28,7 +28,7 @@
         {% endif %}
         </div>
         <div class="pure-u-1-8">
-            <button name='button' type='submit' value="{{ item.uniqueid }}" class="button is-warning is-light">
+            <button name='button' type='submit' value="{{ item.uniqueid }}" class="pure-button tooltip">
                 <i class="fas fa-minus-circle"></i>
                 <span class="tooltiptext">delete this {{ item.name }} in your order</span>
             </button> 
@@ -37,6 +37,35 @@
     {% endfor %}
     {% endfor %}
     </ul>
+    <br>
+    <div class="input-group">
+        <span class="input-group-addon">Pick Up  </span>
+            <select name="comp_select" class="selectpicker form-control">
+              
+              <option value="Yes">Yes</option>
+              <option value="No">Yes</option>
+            </select>
+    </div>
+    <br>
+
+    <div class="input-group">
+        <span class="input-group-addon">If pick up, please check the car info  </span>
+    </div>
+    <div class="form-group">
+        <label class="small mb-0">{{ form.plateNum.label }}</label>
+        {{ form.plateNum(class="form-control") }}
+      </div>
+      <div class="form-group">
+        <label class="small mb-0">{{ form.carDescription.label }}</label>
+        {{ form.carDescription(class="form-control") }}
+      </div>
+      <div class="form-group">
+        <label class="small mb-0">{{ form.payMethod.label }}</label>
+        {{ form.payMethod(class="form-control") }}
+      </div>
+      
+
+    </div>
 {% endif %}
 <div>
     <button name='button' type='submit' value="checkout" class="pure-button"> 
@@ -45,5 +74,16 @@
     </button>
 </div>
 </form>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $('#datepick').datetimepicker();
+    });
+  </script>
 {% endblock %}
 

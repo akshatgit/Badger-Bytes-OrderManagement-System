@@ -6,7 +6,7 @@
 
 <div class="column is-4 is-offset-4">
     <h3 class="title">Edit Profile</h3>
-    <div class="box" style="width: 400px;">
+    <div class="box">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
             <div class="notification is-danger">
@@ -17,7 +17,7 @@
         <form method="POST" action="/settings">
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="tel" name="Phone Number" autofocus="" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required placeholder="123-456-7890">
+                    <input class="input is-large" type="phone" name="phone" placeholder="Phone" autofocus="">
                 </div>
             </div>
 
@@ -35,9 +35,22 @@
 
             <div class="field">
                 <div class="control">
+                    <input class="input is-large" type="text" name="plateNum" placeholder="Car Plate Num" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="carDescription" placeholder="Car Description" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
                     <input class="input is-large" type="password" name="password" placeholder="Password">
                 </div>
             </div>
+
 
             <button class="button is-block is-info is-large is-fullwidth">Update</button>
         </form>
