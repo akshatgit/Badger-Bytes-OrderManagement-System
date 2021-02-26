@@ -8,8 +8,11 @@ from datetime import datetime
 from src.ingredient import Ingredient
 import sys
 from init import bootstrap_system
+<<<<<<< HEAD
 import pickle
 system = bootstrap_system()
+=======
+>>>>>>> added staff pages on report and menu update
 
 '''
 Website Structure:
@@ -165,6 +168,45 @@ def staff_homepage():
     return redirect(url_for('staff.staff_order'))
 
 
+<<<<<<< HEAD
+=======
+
+@staff.route('/staff/updatemenu')
+def staff_updatemenu():
+    return render_template('staff_updatemenu.html')
+
+@staff.route('/staff/report')
+def staff_report():
+    return render_template('staff_report.html')
+
+@staff.route('/staff/checkmenu')
+def staff_checkmenu():
+    return render_template('staff_checkmenu.html')
+
+
+# @staff.route('/staff/login', methods=["GET", "POST"])
+# def staff_login():
+
+#     if request.method == 'POST':
+#         if request.form['button'] == "login":
+#             if system.staff_login(request.form['username'], request.form['password']):
+#                 return redirect(url_for('staff_order'))
+#             else:
+#                 return render_template('staff_login.html', username=request.form['username'], error=True)
+
+#         elif request.form['button'] == "cancel":
+#             return redirect(url_for('home_page'))
+
+#     return render_template('staff_login.html', username=None, error=None)
+
+
+# @staff.route('/staff/logout')
+# def staff_logout():
+#     system.staff_logout()
+#     return redirect(url_for('home_page'))
+
+
+>>>>>>> added staff pages on report and menu update
 @staff.route('/staff/order', methods=["GET", "POST"])
 def staff_order():
 
