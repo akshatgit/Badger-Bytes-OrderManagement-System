@@ -4,7 +4,9 @@ from datetime import datetime
 from src.ingredient import Ingredient
 import sys
 from init import bootstrap_system 
-
+from routes import system
+import pickle
+system = bootstrap_system()
 '/admin'
 '/admin/newmenu'
 '/admin/modify'
@@ -62,13 +64,18 @@ def admin_modify_item(menu_id):
     else:
         return render_template('admin_modify_item.html', menu_id=menu_id, item=editedItem)
 # Admin: Print usage reports of website activity and purchases
-@bull.route('admin/reports')
+@app.route('admin/reports')
 @login_required
 def admin_usage_reports():
     """Run and display various analytics reports."""
-    products = Product.query.all()
-    purchases = Purchase.query.all()
-    purchases_by_day = dict()
+
+    # with open('system_data.dat', 'wb') as f:
+    #     pickle.dump(data, f)
+    #     products = menu.query.all()
+    #     purchases = Purchase.query.all()
+    inputFile = open('system_data.dat','rb')
+    new_dict = pickle.load(inputFile)
+    purchases_by_day = new_dict()
     for purchase in purchases:
         purchase_date = purchase.sold_at.date().strftime('%m-%d')
         if purchase_date not in purchases_by_day:
