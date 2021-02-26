@@ -7,14 +7,23 @@
 <h1 class="title">
   Welcome, {{ name }}!
 </br>
-  Details are as follows:
+  User Information:
 </br>
   Name: {{name}}
 </br>
-  Phone {{phone}}
+  Phone: {{phone}}
 </br>
   Email: {{email}}
 </br>
   Address: {{address}}
+</br>
+  <label for="Payment">Choose a payment method:</label>
+
+            <select name="payment" id="payment">
+              <option value="Customer">Paypal</option>
+              <option value="Admin">Strip</option>
+              <option value="Restraunt Staff">Apple Pay</option>
+             
+            </select>
 </h1>
 {% endblock %}

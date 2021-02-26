@@ -3,10 +3,13 @@
 {% extends "base.html" %}
 
 {% block content %}
+<head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='spike.css') }}">
+</head>
+<body background="{{ url_for('static', filename='1001.jpg') }}">
 <h1 class="title">
   Welcome to Badger Bytes
 </h1>
-<h2 class="subtitle">
-  Tasty blah blah
-</h2>
+</body>
+
 {% endblock %}
