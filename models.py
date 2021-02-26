@@ -35,5 +35,6 @@ class User(UserMixin, db.Model):
                           user=self.name,
                           email=self.email,
                           phone=self.phone,
-                          password=self.password)
+                          password=self.password,
+                          role=self.role)
         # return '<Name %r, email %r, phone %r, role %r, address %r, >' % self.name, self.email, self.phone, self.role, self.address

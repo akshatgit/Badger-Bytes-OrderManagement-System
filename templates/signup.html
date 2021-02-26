@@ -18,9 +18,9 @@
              <label for="Users">Choose a user account:</label>
 
             <select name="User" id="usertype">
-              <option value="Customer">Customer</option>
-              <option value="Admin">Administrator</option>
-              <option value="Restraunt Staff">Restraunt staff</option>
+              <option value="customer">Customer</option>
+              <option value="admin">Administrator</option>
+            <option value="staff">Restraunt staff</option>
              
             </select>
 
@@ -46,7 +46,7 @@
 
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="Phone Number" placeholder="Phone Number" autofocus="">
+                    <input class="input is-large" type="tel" name="Phone Number" autofocus="" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required placeholder="123-456-7890">
                 </div>
             </div>
 
