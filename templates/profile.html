@@ -17,7 +17,15 @@
 </br>
   Address: {{address}}
 </br>
-  <label for="Payment">Choose a payment method:</label>
+</h1>
+
+<!-- <div class="content>" -->
+
+<!-- <p>Payment</p> -->
+<span class="tag is-primary is-medium"><b>Payment Method</b> </span>
+<!-- </div> -->
+  <!-- <label for="Payment">Choose a payment method:</label> -->
+  <div class="select">
 
             <select name="payment" id="payment">
               <option value="Customer">Paypal</option>
@@ -25,5 +33,6 @@
               <option value="Restraunt Staff">Apple Pay</option>
              
             </select>
-</h1>
+          </div>
+
 {% endblock %}
