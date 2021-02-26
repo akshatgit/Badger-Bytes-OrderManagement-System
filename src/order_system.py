@@ -177,13 +177,7 @@ class OrderSystem:
 
 
     # function for staff to remove orders which are completed from the list
-    def update_order(self, order_id: int, username = 'NONE', password = 'NONE'):
-        #authorising to make sure only staff can remove orders
-        if self._staff_system.is_authenticated == False:
-            print('hi')
-            if self._staff_system.login(username,password) == False:
-                print('Invalid login', file=sys.stderr)
-                return
+    def update_order(self, order_id: int, username = 'NONE', password = 'NONE'):        
         order = self._get_pendingorder(order_id)
         if order:
             if order.is_payed == True:

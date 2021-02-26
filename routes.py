@@ -183,6 +183,7 @@ def staff_homepage():
 def staff_order():
 
     if request.method == 'POST':
+        print("button")
         order_id = int(request.form['button'])
         system.update_order(order_id)
         system.save_state() 
