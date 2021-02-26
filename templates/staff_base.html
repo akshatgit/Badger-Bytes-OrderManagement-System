@@ -18,11 +18,11 @@
 
 <div class="container">
     <div class="columns">
-        <div class="column is-3 ">
+        <div>
             <aside class="menu is-hidden-mobile">
                 <ul class="menu-list">
-                    <li><a class="is-active" href="{{ url_for('staff.staff_order') }}" class="navbar-item"> Order</a></li>
-                    <li><a href="{{ url_for('staff.staff_inventory') }}" class="navbar-item">Inventory</a></li>
+                    <li class="navbar-item"class = is-active><a href="{{ url_for('staff.staff_order') }}" class="navbar-item"> Order</a></li>
+                    <li class="navbar-item"><a href="{{ url_for('staff.staff_inventory') }}" class="navbar-item">Inventory</a></li>
                 </ul>
             </aside>
         </div>
