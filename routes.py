@@ -223,30 +223,59 @@ def admin_newmenu():
     else:
         return render_template('admin_newmenu.html')
 
-@admin.route('/admin/modify')
+@admin.route('/admin/modify', methods=["GET", "POST"])
 def admin_modify():
-
-    # TODO FROM BELOW
-
-
-    '''
-    editedItem = session.query(menu_name).filter_by(id=menu_id).one()
     if request.method == 'POST':
-        if request.form['name']:
-            editedItem.name = request.form['name']
-        if request.form['image']:
-            editedItem.image = flask.request.files.get('image', '')
-        if request.form['price']:
-            editedItem.price = request.form['price']
-        if request.form['availability']:
-            editedItem.course = request.form['availability']
-        session.add(editedItem)
-        session.commit()
-        flash('Menu item has been changed successfully.')
-        return redirect(url_for('admin/admin_showMenu'))
-    else:
-        return render_template('admin_modify.html', menu_id=menu_id, item=editedItem)
-        '''
+        print(request.form)
+        # for name, amount in request.form.items():
+        #     if amount:
+        #         system.inventory.update_stock(name, float(amount))
+        # system.save_state()
+    
+    return render_template('admin_modify.html', system=system)
+
+
+@admin.route('/admin/modify/<menu_name>', methods=["GET", "POST"])
+def modify_menu(menu_name):
+    check_order_in_session()
+    
+    if request.method == 'POST':
+        if "add_btn" in request.form.keys():
+            item = system.get_item(request.form["add_btn"])
+            if menu_name == "Mains":
+                 system.add_default_main(session['order_ID'], item)
+            else:
+                system.add_items_in_orders(session['order_ID'], item)
+        elif "mod_btn" in request.form.keys():
+            item = system.get_item(request.form["mod_btn"])
+            return redirect(url_for("admin.modify_menu", item_name=item.name))
+    
+    menu = system.get_menu(menu_name)
+    if not menu:
+        
+        return redirect(url_for('page_not_found'))
+
+    return render_template('admin_menu_list.html', menu_name=menu_name, menu=menu.display(), inventory=system.inventory)
+    
+
+    # '''
+    # editedItem = session.query(menu_name).filter_by(id=menu_id).one()
+    # if request.method == 'POST':
+    #     if request.form['name']:
+    #         editedItem.name = request.form['name']
+    #     if request.form['image']:
+    #         editedItem.image = flask.request.files.get('image', '')
+    #     if request.form['price']:
+    #         editedItem.price = request.form['price']
+    #     if request.form['availability']:
+    #         editedItem.course = request.form['availability']
+    #     session.add(editedItem)
+    #     session.commit()
+    #     flash('Menu item has been changed successfully.')
+    #     return redirect(url_for('admin/admin_showMenu'))
+    # else:
+    #     return render_template('admin_modify.html', menu_id=menu_id, item=editedItem)
+    #     '''
 
 
 
