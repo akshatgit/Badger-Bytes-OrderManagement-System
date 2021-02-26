@@ -22,7 +22,7 @@ def settingspage():
 @auth.route('/settings',  methods=['GET', 'POST'])
 @login_required
 def settings():
-    form = ProfileForm()
+    
     if request.method == "POST":
         # current_user.name = form.name.data
         # current_user.phone = form.phone.data
@@ -36,7 +36,6 @@ def settings():
         current_user.password = generate_password_hash(request.form["password"], method='sha256')
         current_user.plateNum = request.form["plateNum"]
         current_user.carDescription = request.form["carDescription"]
-       
         db.session.commit()
     # else:
     #     form.name.data = current_user.name
@@ -44,7 +43,7 @@ def settings():
     #     form.address.data = current_user.address
     #     form.plateNum.data = current_user.plateNum
     #     form.carDescription.data = current_user.carDescription      
-    return render_template('profile.html', name=current_user.name, form=form)
+    return render_template('profile.html', name=current_user.name)
 
 @auth.route('/login', methods=['POST'])
 def login_post():
@@ -95,3 +94,5 @@ def signup_post():
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
+
+

@@ -3,13 +3,13 @@
 # from flask_login import login_required, current_user
 
 from flask import render_template, request, redirect, url_for, abort, session, Blueprint
-from server import app
+from server import app, db
 from datetime import datetime
 from src.ingredient import Ingredient
 import sys
 from init import bootstrap_system 
-# from form import CustOrderForm
-# from flask_login import current_user
+from form import CustOrderForm
+from flask_login import current_user
 '''
 Website Structure:
 - Home page '/'
@@ -127,7 +127,40 @@ def modify_mains(item_name):
     return render_template("customer_mains_creation.html", item=item, inventory=system.inventory, error=item._errors)
 
 
-
+@customer.route('/customer/review', methods=["GET", "POST"])
+def review_order():
+    check_order_in_session()
+    form =  CustOrderForm()
+    order = system.get_order(session['order_ID'])
+    if request.method == 'POST':
+        if request.form["button"] == "checkout":
+            order_id = session['order_ID']
+            error = system.checkout(order_id)
+            current_user.plateNum = form.plateNum.data
+            current_user.carDescription = form.carDescription.data
+            current_user.payment = form.payMethod.data
+            db.session.commit()
+            if error:
+                return render_template("error.html", error=error)
+            session.pop('order_ID')
+            return render_template("customer_order_result.html", order_id=order_id)
+        else:
+            system.del_items_in_orders(order.order_id, request.form["button"])
+            
+    # form =  CustOrderForm()
+    # if form.validate_on_submit():
+    #     current_user.plateNum = form.plateNum.data
+    #     current_user.carDescription = form.carDescription.data
+    #     current_user.payment = form.payMethod.data
+    #     db.session.commit()
+    #     return redirect(url_for('review_order'))  
+    else:                    
+        form.plateNum.data = current_user.plateNum
+        form.carDescription.data = current_user.carDescription
+        form.payMethod.data = current_user.payment
+    
+    return render_template('customer_review_order.html', order=order, form=form)
+# @customer.route('/customer/review', methods=["GET", "POST"])
 # def review_order():
 #     check_order_in_session()
 
@@ -142,37 +175,8 @@ def modify_mains(item_name):
 #             return render_template("customer_order_result.html", order_id=order_id)
 #         else:
 #             system.del_items_in_orders(order.order_id, request.form["button"])
-            
-#     # form =  CustOrderForm()
-#     # if form.validate_on_submit():
-#     #     current_user.plateNum = form.plateNum.data
-#     #     current_user.carDescription = form.carDescription.data
-#     #     current_user.payment = form.payMethod.data
-#     #     db.session.commit()
-#     #     return redirect(url_for('review_order'))  
-                        
-#     # form.plateNum.data = current_user.plateNum
-#     # form.carDescription.data = current_user.carDescription
-#     # form.payMethod.data = current_user.payment
     
 #     return render_template('customer_review_order.html', order=order)
-@customer.route('/customer/review', methods=["GET", "POST"])
-def review_order():
-    check_order_in_session()
-
-    order = system.get_order(session['order_ID'])
-    if request.method == 'POST':
-        if request.form["button"] == "checkout":
-            order_id = session['order_ID']
-            error = system.checkout(order_id)
-            if error:
-                return render_template("error.html", error=error)
-            session.pop('order_ID')
-            return render_template("customer_order_result.html", order_id=order_id)
-        else:
-            system.del_items_in_orders(order.order_id, request.form["button"])
-    
-    return render_template('customer_review_order.html', order=order)
 
 
 @customer.route('/customer/order/<order_id>')

@@ -40,4 +40,3 @@ class User(UserMixin, db.Model):
                           phone=self.phone)
         # return '<Name %r, email %r, phone %r, role %r, address %r, >' % self.name, self.email, self.phone, self.role, self.address
 
-
