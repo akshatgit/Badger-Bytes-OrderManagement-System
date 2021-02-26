@@ -3,14 +3,13 @@
 # from flask_login import login_required, current_user
 
 from flask import render_template, request, redirect, url_for, abort, session, Blueprint
-from server import app
+from server import app, db
 from datetime import datetime
 from src.ingredient import Ingredient
 import sys
 from init import bootstrap_system 
-import pickle
-system = bootstrap_system()
-
+from form import CustOrderForm
+from flask_login import current_user
 '''
 Website Structure:
 - Home page '/'
@@ -28,11 +27,6 @@ Website Structure:
     - Logout '/staff/logout'
     - Order '/staff/order'
     - Inventory '/staff/inventory'
--#Admin '/admin'
-    - Homepage (redirects to newmenu)'/admin'
-    - Create new menu'/admin/newmenu'
-    - Modify menu '/admin/modify'
-    - Usage reports '/admin/usage'
 '''
 
 
@@ -45,10 +39,11 @@ page for "page not found"
 #     return render_template('404.html'), 404
 
 customer = Blueprint('customer', __name__)
-staff = Blueprint('staff', __name__)
 admin = Blueprint('admin', __name__)
 system = bootstrap_system()
-print(system.get_menulist())
+
+
+# The Admin page requires an 'Admin' role
 
 
 @customer.route('/customer', methods=["GET", "POST"])
@@ -135,20 +130,53 @@ def modify_mains(item_name):
 @customer.route('/customer/review', methods=["GET", "POST"])
 def review_order():
     check_order_in_session()
-
+    form =  CustOrderForm()
     order = system.get_order(session['order_ID'])
     if request.method == 'POST':
         if request.form["button"] == "checkout":
             order_id = session['order_ID']
             error = system.checkout(order_id)
+            current_user.plateNum = form.plateNum.data
+            current_user.carDescription = form.carDescription.data
+            current_user.payment = form.payMethod.data
+            db.session.commit()
             if error:
                 return render_template("error.html", error=error)
             session.pop('order_ID')
             return render_template("customer_order_result.html", order_id=order_id)
         else:
             system.del_items_in_orders(order.order_id, request.form["button"])
+            
+    # form =  CustOrderForm()
+    # if form.validate_on_submit():
+    #     current_user.plateNum = form.plateNum.data
+    #     current_user.carDescription = form.carDescription.data
+    #     current_user.payment = form.payMethod.data
+    #     db.session.commit()
+    #     return redirect(url_for('review_order'))  
+    else:                    
+        form.plateNum.data = current_user.plateNum
+        form.carDescription.data = current_user.carDescription
+        form.payMethod.data = current_user.payment
     
-    return render_template('customer_review_order.html', order=order)
+    return render_template('customer_review_order.html', order=order, form=form)
+# @customer.route('/customer/review', methods=["GET", "POST"])
+# def review_order():
+#     check_order_in_session()
+
+#     order = system.get_order(session['order_ID'])
+#     if request.method == 'POST':
+#         if request.form["button"] == "checkout":
+#             order_id = session['order_ID']
+#             error = system.checkout(order_id)
+#             if error:
+#                 return render_template("error.html", error=error)
+#             session.pop('order_ID')
+#             return render_template("customer_order_result.html", order_id=order_id)
+#         else:
+#             system.del_items_in_orders(order.order_id, request.form["button"])
+    
+#     return render_template('customer_review_order.html', order=order)
 
 
 @customer.route('/customer/order/<order_id>')
@@ -159,16 +187,42 @@ def search_order(order_id):
 '''
 Staff pages:
 '''
-@staff.route('/staff')
+@admin.route('/staff')
 def staff_homepage():
-    return redirect(url_for('staff.staff_order'))
+    if system.is_authenticated:
+        return redirect(url_for('staff_order'))
+    else:
+        return redirect(url_for('staff_login'))
 
 
-@staff.route('/staff/order', methods=["GET", "POST"])
-def staff_order():
+@admin.route('/staff/login', methods=["GET", "POST"])
+def staff_login():
 
     if request.method == 'POST':
-        print("button")
+        if request.form['button'] == "login":
+            if system.staff_login(request.form['username'], request.form['password']):
+                return redirect(url_for('staff_order'))
+            else:
+                return render_template('staff_login.html', username=request.form['username'], error=True)
+        
+        elif request.form['button'] == "cancel":
+            return redirect(url_for('home_page')) 
+    
+    return render_template('staff_login.html', username=None, error=None)
+
+
+@admin.route('/staff/logout')
+def staff_logout():
+    system.staff_logout()
+    return redirect(url_for('home_page'))
+
+
+@admin.route('/staff/order', methods=["GET", "POST"])
+def staff_order():
+    if not system.is_authenticated:
+        return redirect(url_for('staff_login')) 
+
+    if request.method == 'POST':
         order_id = int(request.form['button'])
         system.update_order(order_id)
         system.save_state() 
@@ -176,8 +230,10 @@ def staff_order():
     return render_template('staff_order.html', system=system)
 
 
-@staff.route('/staff/inventory', methods=["GET", "POST"])
+@admin.route('/staff/inventory', methods=["GET", "POST"])
 def staff_inventory():
+    if not system.is_authenticated:
+        return redirect(url_for('staff_login'))
     
     if request.method == 'POST':
         for name, amount in request.form.items():
@@ -188,97 +244,3 @@ def staff_inventory():
     return render_template('staff_inventory.html', system=system)
 
 
-'''
-Admin pages:
-'''
-
-
-@admin.route('/admin', methods=["GET"])
-def admin_home_page():
-    return redirect(url_for('admin.admin_newmenu'))
-
-'''--------------------------------------------------------------------------'''
-
-
-@admin.route('/admin/showMenu', methods=["GET", "POST"])
-def admin_showMenu():
-    return redirect(url_for('admin.admin_newmenu'))
-
-
-
-@admin.route('/admin/newmenu', methods=["GET", "POST"])
-def admin_newmenu(): 
-
-    if request.method == 'POST':
-        print(request.form)
-        # newItem = MenuItem(name=request.form['name'], image=flask.request.files.get('image', ''), price=request.form[
-        #                        'price'], availability=request.form['availability'], user_id=admin.user_id)
-        # # session.add(newItem)
-        # session.commit()
-        flash('New menu %s item has been successfully added' % (newItem.name))
-        return redirect(url_for('admin/admin_showMenu', restaurant_id=restaurant_id))
-    else:
-        return render_template('admin_newmenu.html')
-
-@admin.route('/admin/modify')
-def admin_modify():
-
-    # TODO FROM BELOW
-
-
-    '''
-    editedItem = session.query(menu_name).filter_by(id=menu_id).one()
-    if request.method == 'POST':
-        if request.form['name']:
-            editedItem.name = request.form['name']
-        if request.form['image']:
-            editedItem.image = flask.request.files.get('image', '')
-        if request.form['price']:
-            editedItem.price = request.form['price']
-        if request.form['availability']:
-            editedItem.course = request.form['availability']
-        session.add(editedItem)
-        session.commit()
-        flash('Menu item has been changed successfully.')
-        return redirect(url_for('admin/admin_showMenu'))
-    else:
-        return render_template('admin_modify.html', menu_id=menu_id, item=editedItem)
-        '''
-
-
-
-@admin.route('/admin/usage', methods=["GET", "POST"])
-def admin_usage():
-
-    # TODO FROM BELOW
-
-    '''
-    """Run and display various analytics reports."""
-
-    # with open('system_data.dat', 'wb') as f:
-    #     pickle.dump(data, f)
-    #     products = menu.query.all()
-    #     purchases = Purchase.query.all()
-    inputFile = open('system_data.dat', 'rb')
-    new_dict = pickle.load(inputFile)
-    purchases_by_day = new_dict()
-    for purchase in purchases:
-        purchase_date = purchase.sold_at.date().strftime('%m-%d')
-        if purchase_date not in purchases_by_day:
-            purchases_by_day[purchase_date] = {'units': 0, 'sales': 0.0}
-        purchases_by_day[purchase_date]['units'] += 1
-        purchases_by_day[purchase_date]['sales'] += purchase.product.price
-    purchase_days = sorted(purchases_by_day.keys())
-    units = len(purchases)
-    total_sales = sum([p.product.price for p in purchases])
-
-
-    return render_template('admin_usage.html',
-                            products=products,
-                            purchase_days=purchase_days,
-                            purchases=purchases,
-                            purchases_by_day=purchases_by_day,
-                            units=units,
-                            total_sales=total_sales)
-
-'''

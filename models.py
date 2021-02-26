@@ -12,6 +12,9 @@ class User(UserMixin, db.Model):
     phone = db.Column(db.String(100), nullable=True)
     address = db.Column(db.String(1000), nullable=True)
     name = db.Column(db.String(1000))
+    payment = db.Column(db.String(20), nullable=False, server_default='')
+    plateNum = db.Column(db.String(10), nullable=True, server_default='')
+    carDescription = db.Column(db.String(100), nullable=True, server_default='color and band')
     
     def _repr(self, **fields: typing.Dict[str, typing.Any]) -> str:
         '''
@@ -34,7 +37,6 @@ class User(UserMixin, db.Model):
         return self._repr(id=self.id,
                           user=self.name,
                           email=self.email,
-                          phone=self.phone,
-                          password=self.password,
-                          role=self.role)
+                          phone=self.phone)
         # return '<Name %r, email %r, phone %r, role %r, address %r, >' % self.name, self.email, self.phone, self.role, self.address
+
