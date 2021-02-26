@@ -7,7 +7,12 @@
       <!-- <button class="delete"></button> -->
     </div>
     <div class="message-body">
-    Your order ID is <b>{{ order_id }}</b>.
+    Your order ID is <b>{{ order_id }}</b>
+    <br> </br>
+    Payment Method : <b> {{Payment}} </b>
+    <br> </br>
+  
+    
     You can track the process of your order in the <a href="{{ url_for('customer.home_page') }}">home page</a>
     </div>
   </article>

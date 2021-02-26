@@ -1,7 +1,7 @@
 {% extends 'new_order.html' %}
 {% block menus_block %}
 <div class="pure-u-3-4 main_content">
-<h1> Order Review:</h1>
+<h1> Customer Reciept:</h1>
 <div> {{ order }} </div>
 <form method="POST">
 {% if order %}
@@ -27,27 +27,12 @@
             Description: {{ item.description }} 
         {% endif %}
         </div>
-        <div class="pure-u-1-8">
-            <button name='button' type='submit' value="{{ item.uniqueid }}" class="button is-warning is-light">
-                <i class="fas fa-minus-circle"></i>
-                <span class="tooltiptext">delete this {{ item.name }} in your order</span>
-            </button> 
-        </div> 
+
     </li> 
     {% endfor %}
     {% endfor %}
     </ul>
 {% endif %}
-<div>
-    <button name='button' type='submit' value="checkout" class="button is-link"> 
-        <i class="fas fa-money-bill"></i>
-        Checkout
-    </button>
-      <button name='button' type='submit' value="reciept" class="button is-link"> 
-        
-        Download reciept
-    </button>
-</div>
+
 </form>
 {% endblock %}
-

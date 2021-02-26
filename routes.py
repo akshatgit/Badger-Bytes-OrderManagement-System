@@ -135,12 +135,30 @@ def review_order():
             error = system.checkout(order_id)
             if error:
                 return render_template("error.html", error=error)
-            session.pop('order_ID')
-            return render_template("customer_order_result.html", order_id=order_id)
+            else:
+                session.pop('order_ID')
+                return render_template("customer_order_result.html", order_id=order_id , Payment='Stripe')
+        if request.form["button"] == "reciept":
+            return render_template("customer_reciept.html", order=order)
+
         else:
             system.del_items_in_orders(order.order_id, request.form["button"])
     
     return render_template('customer_review_order.html', order=order)
+
+# @customer.route('/customer/review')
+# def print_reciept():
+#     check_order_in_session()
+
+#     order = system.get_order(session['order_ID'])
+#     if request.method == 'POST':
+#         if request.form["button"] == "reciept":
+#             order_id = session['order_ID']
+#             error = system.checkout(order_id)
+#             if error:
+#                 return render_template("error.html", error=error)
+#             session.pop('order_ID')
+#             return render_template("customer_reciept.html", order=order)
 
 
 @customer.route('/customer/order/<order_id>')
