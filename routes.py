@@ -48,7 +48,7 @@ customer = Blueprint('customer', __name__)
 staff = Blueprint('staff', __name__)
 admin = Blueprint('admin', __name__)
 system = bootstrap_system()
-
+print(system.get_menulist())
 
 
 @customer.route('/customer', methods=["GET", "POST"])
@@ -164,29 +164,6 @@ def staff_homepage():
     return redirect(url_for('staff.staff_order'))
 
 
-
-# @staff.route('/staff/login', methods=["GET", "POST"])
-# def staff_login():
-
-#     if request.method == 'POST':
-#         if request.form['button'] == "login":
-#             if system.staff_login(request.form['username'], request.form['password']):
-#                 return redirect(url_for('staff_order'))
-#             else:
-#                 return render_template('staff_login.html', username=request.form['username'], error=True)
-        
-#         elif request.form['button'] == "cancel":
-#             return redirect(url_for('home_page')) 
-    
-#     return render_template('staff_login.html', username=None, error=None)
-
-
-# @staff.route('/staff/logout')
-# def staff_logout():
-#     system.staff_logout()
-#     return redirect(url_for('home_page'))
-
-
 @staff.route('/staff/order', methods=["GET", "POST"])
 def staff_order():
 
@@ -211,12 +188,6 @@ def staff_inventory():
     return render_template('staff_inventory.html', system=system)
 
 
-
-
-
-
-
-
 '''
 Admin pages:
 '''
@@ -238,14 +209,12 @@ def admin_showMenu():
 @admin.route('/admin/newmenu', methods=["GET", "POST"])
 def admin_newmenu(): 
 
-    # TODO: NEED TO INTEGRATE FRONTEND AND BACKEND
-
-
     if request.method == 'POST':
-        newItem = MenuItem(name=request.form['name'], image=flask.request.files.get('image', ''), price=request.form[
-                               'price'], availability=request.form['availability'], user_id=admin.user_id)
-        session.add(newItem)
-        session.commit()
+        print(request.form)
+        # newItem = MenuItem(name=request.form['name'], image=flask.request.files.get('image', ''), price=request.form[
+        #                        'price'], availability=request.form['availability'], user_id=admin.user_id)
+        # # session.add(newItem)
+        # session.commit()
         flash('New menu %s item has been successfully added' % (newItem.name))
         return redirect(url_for('admin/admin_showMenu', restaurant_id=restaurant_id))
     else:

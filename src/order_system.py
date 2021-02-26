@@ -29,6 +29,10 @@ class OrderSystem:
     '''
     Menu parp
     '''
+    def get_menulist(self):
+        for item in self._menus:
+            print(item)
+        return self._menus
 
     # get a menu
     def get_menu(self, menu_name: str) -> Menu:
