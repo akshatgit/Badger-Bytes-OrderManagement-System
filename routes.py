@@ -240,15 +240,12 @@ def modify_menu(menu_name):
     check_order_in_session()
     
     if request.method == 'POST':
-        if "add_btn" in request.form.keys():
-            item = system.get_item(request.form["add_btn"])
-            if menu_name == "Mains":
-                 system.add_default_main(session['order_ID'], item)
-            else:
-                system.add_items_in_orders(session['order_ID'], item)
-        elif "mod_btn" in request.form.keys():
-            item = system.get_item(request.form["mod_btn"])
-            return redirect(url_for("admin.modify_menu", item_name=item.name))
+        if "del_btn" in request.form.keys():
+            # TODO
+            print("delete button")
+        elif "upd_btn" in request.form.keys():
+            # TOD
+            print("update button")
     
     menu = system.get_menu(menu_name)
     if not menu:
