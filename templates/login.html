@@ -18,15 +18,15 @@
         {% endwith %}
         <form method="POST" action="/login">
 
-             <label for="Users">Choose a user account:</label>
-
+             <!-- <label for="Users">Choose a user account:</label> -->
+             <div class="select">
             <select name="usertype" id="user">
               <option value="customer">Customer</option>
               <option value="admin">Administrator</option>
               <option value="staff">Restraunt staff</option>
              
             </select>
-
+            </div>
             <br><br>
 
             <div class="field">
