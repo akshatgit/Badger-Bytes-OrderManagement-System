@@ -1,0 +1,27 @@
+{% extends 'staff_base.html' %}
+{% block staff_block %}
+
+<!--Get Report-->
+<div class="pure-u-7-8 pure-menu">
+<h3>Report</h3>
+<form class="pure-form pure-form-stacked">
+  <fieldset>
+    <!--<legend>Please Choose Your Report</legend><br>-->
+    <div>
+      <label for="stacked-report">please choose</label>
+      <select id="stacked-report">
+        <option>Day</option>
+        <option>Week</option>
+        <option>Month</option>
+        <option>Year</option>
+      </select>
+      <button name='button' type='submit' value="checkout" class="pure-button">
+          <i class="fas fa-money-bill"></i>
+          Check
+      </button>
+    </div>
+    <div>
+
+    </div>
+
+{% endblock %}

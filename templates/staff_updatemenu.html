@@ -1,0 +1,41 @@
+{% extends 'staff_base.html' %}
+{% block staff_block %}
+
+<!-- Check Menu -->
+
+
+<!-- Add New Dish -->
+<form class="pure-form pure-form-aligned">
+  <fieldset>
+    <legend>Add a Dish to Menu</legend><br>
+    <div class="pure-control-group">
+      <label for="aligned-dishname">Dish Name</label>
+      <input type="text" id="aligned-name" placeholder="dish name"/>
+    </div>
+    <br>
+    <div class="pure-control-group">
+      <label for="aligned-price">Price</label>
+      <input type="text" id="aligned-price" placeholder="price"/>
+    </div>
+    <br>
+    <div class="pure-control-group">
+      <label for="aligned-description">Description</label>
+      <input type="text" id="aligned-description" placeholder="description"/>
+    </div>
+    <br>
+    <br>
+<!-- Main Content -->
+    <div>
+        <button name='button' type='submit' value="checkout" class="pure-button">
+            <i class="fas fa-money-bill"></i>
+            Submit
+        </button>
+        <button name='button' type='submit' value="checkout" class="pure-button">
+            <i class="fas fa-money-bill"></i>
+            Cancle
+        </button>
+    </div>
+    <div>
+
+
+{% endblock %}

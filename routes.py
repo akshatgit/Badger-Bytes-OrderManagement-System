@@ -7,13 +7,13 @@ from server import app
 from datetime import datetime
 from src.ingredient import Ingredient
 import sys
-from init import bootstrap_system 
+from init import bootstrap_system
 
 '''
 Website Structure:
 - Home page '/'
 - #Customer '/customer'
-    - Menu pages '/customer/menu' 
+    - Menu pages '/customer/menu'
         - Mains '/customer/mains'
             - Creation '/customer/mains/creation'
         - Sides '/customer/sides'
@@ -46,7 +46,7 @@ system = bootstrap_system()
 @customer.route('/customer', methods=["GET", "POST"])
 def home_page():
     print(session)
-    # if request.method == 'POST': 
+    # if request.method == 'POST':
     #     if request.form["button"] == "make_new_order":
     order_id = system.make_order()
     session['order_ID'] = order_id
@@ -77,7 +77,7 @@ def check_order_in_session():
 @customer.route('/customer/menu/<menu_name>', methods=["GET", "POST"])
 def display_menu(menu_name):
     check_order_in_session()
-    
+
     if request.method == 'POST':
         if "add_btn" in request.form.keys():
             item = system.get_item(request.form["add_btn"])
@@ -88,19 +88,19 @@ def display_menu(menu_name):
         elif "mod_btn" in request.form.keys():
             item = system.get_item(request.form["mod_btn"])
             return redirect(url_for("customer.modify_mains", item_name=item.name))
-    
+
     menu = system.get_menu(menu_name)
     if not menu:
-        
+
         return redirect(url_for('page_not_found'))
 
     return render_template('customer_menus.html', menu_name=menu_name, menu=menu.display(), inventory=system.inventory)
-    
+
 
 @customer.route('/customer/creation/<item_name>', methods=["GET", "POST"])
 def modify_mains(item_name):
     check_order_in_session()
-    
+
     item = system.get_item(item_name)
     print(item)
     print(system.inventory.display_unavailable_ingredients())
@@ -120,7 +120,7 @@ def modify_mains(item_name):
                     return render_template("customer_mains_creation.html", item=item, inventory=system.inventory, error=item._errors)
             system.add_items_in_orders(session['order_ID'], item)
             return redirect(url_for('review_order'))
-    
+
     return render_template("customer_mains_creation.html", item=item, inventory=system.inventory, error=item._errors)
 
 
@@ -139,7 +139,7 @@ def review_order():
             return render_template("customer_order_result.html", order_id=order_id)
         else:
             system.del_items_in_orders(order.order_id, request.form["button"])
-    
+
     return render_template('customer_review_order.html', order=order)
 
 
@@ -151,10 +151,24 @@ def search_order(order_id):
 '''
 Staff pages:
 '''
+
 @staff.route('/staff')
 def staff_homepage():
     return redirect(url_for('staff.staff_order'))
 
+
+
+@staff.route('/staff/updatemenu')
+def staff_updatemenu():
+    return render_template('staff_updatemenu.html')
+
+@staff.route('/staff/report')
+def staff_report():
+    return render_template('staff_report.html')
+
+@staff.route('/staff/checkmenu')
+def staff_checkmenu():
+    return render_template('staff_checkmenu.html')
 
 
 # @staff.route('/staff/login', methods=["GET", "POST"])
@@ -166,10 +180,10 @@ def staff_homepage():
 #                 return redirect(url_for('staff_order'))
 #             else:
 #                 return render_template('staff_login.html', username=request.form['username'], error=True)
-        
+
 #         elif request.form['button'] == "cancel":
-#             return redirect(url_for('home_page')) 
-    
+#             return redirect(url_for('home_page'))
+
 #     return render_template('staff_login.html', username=None, error=None)
 
 
@@ -186,18 +200,18 @@ def staff_order():
         print("button")
         order_id = int(request.form['button'])
         system.update_order(order_id)
-        system.save_state() 
+        system.save_state()
 
     return render_template('staff_order.html', system=system)
 
 
 @staff.route('/staff/inventory', methods=["GET", "POST"])
 def staff_inventory():
-    
+
     if request.method == 'POST':
         for name, amount in request.form.items():
             if amount:
                 system.inventory.update_stock(name, float(amount))
         system.save_state()
-    
+
     return render_template('staff_inventory.html', system=system)
