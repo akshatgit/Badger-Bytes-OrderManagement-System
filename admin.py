@@ -1,6 +1,8 @@
 from flask import render_template, request, redirect, url_for, abort, session, Blueprint
 from server import app
 from datetime import datetime
+from flask_login import login_user, logout_user, login_required
+
 from src.ingredient import Ingredient
 import sys
 from init import bootstrap_system 
@@ -18,16 +20,22 @@ Admin pages:
 admin = Blueprint('admin', __name__)
 
 @admin.route('/admin')
-def admin_homepage():
-    if system.is_authenticated:
-        return redirect(url_for('admin_base'))
-    else:
-        return redirect(url_for('admin_login'))
-# Admin: Logging into website
+def home_page():
+    return redirect(url_for('admin.admin_base'))
 
+
+@admin.route('/admin/base', methods=["GET", "POST"])
+def admin_base():
+    if request.method == 'POST':
+        print("button")
+        order_id = int(request.form['button'])
+        system.update_order(order_id)
+        system.save_state() 
+
+    return render_template('staff_order.html', system=system)
 
 # Admin: create a new menu item
-@app.route('admin/newMenu', methods=['GET', 'POST'])
+@app.route('/admin/newMenu', methods=['GET', 'POST'])
 def admin_new_item():
     if not system.is_authenticated:
         return redirect(url_for('staff_login')) 
@@ -64,7 +72,8 @@ def admin_modify_item(menu_id):
     else:
         return render_template('admin_modify_item.html', menu_id=menu_id, item=editedItem)
 # Admin: Print usage reports of website activity and purchases
-@app.route('admin/reports')
+
+@app.route('/admin/reports')
 @login_required
 def admin_usage_reports():
     """Run and display various analytics reports."""

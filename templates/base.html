@@ -37,12 +37,11 @@
                             </a>
                             {% endif %}
 
-                            <!-- TODO
-                                 {% if current_user.role == "admin" %}
+                            {% if current_user.role == "admin" %}
                             <a href="{{ url_for('admin.home_page') }}" class="navbar-item">
                                 Admin
                             </a>
-                            {% endif %} -->
+                            {% endif %}
 
                             <a href="{{ url_for('auth.settings') }}" class="navbar-item">
                                 Settings

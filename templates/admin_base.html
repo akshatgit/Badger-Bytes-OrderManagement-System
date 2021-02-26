@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block menu %}
+<!-- Tab Menu -->
+<div class="container">
+    <div class="columns">
+        <div>
+            <aside class="menu is-hidden-mobile">
+                <ul class="menu-list">
+                    <li><a href="{{ url_for('staff.staff_order') }}" class="navbar-item"> Order</a></li>
+                    <li><a href="{{ url_for('staff.staff_inventory') }}" class="navbar-item">Inventory</a></li>
+                </ul>
+            </aside>
+        </div>
+    </div>
+</div>
+<!-- Main Content -->
+<div class="container has-text-centered">{% block staff_block %}{% endblock %}</div>
+
+
+{% endblock %}
