@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<article class="message is-info">
+    <div class="message-header">
+        Finished!
+      <!-- <button class="delete"></button> -->
+    </div>
+    <div class="message-body">
+    Your order ID is <b>{{ order_id }}</b>.
+    You can track the process of your order in the <a href="{{ url_for('customer.home_page') }}">home page</a>
+    </div>
+  </article>
+    
+{% endblock %}
+
