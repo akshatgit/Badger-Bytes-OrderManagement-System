@@ -51,8 +51,7 @@
     <div class="input-group">
         <span class="input-group-addon">If pick up, please check the car info  </span>
     </div>
-    <br>
-    <!-- <div class="form-group">
+    <div class="form-group">
         <label class="small mb-0">{{ form.plateNum.label }}</label>
         {{ form.plateNum(class="form-control") }}
       </div>
@@ -64,7 +63,9 @@
         <label class="small mb-0">{{ form.payMethod.label }}</label>
         {{ form.payMethod(class="form-control") }}
       </div>
-    </div> -->
+      
+
+    </div>
 {% endif %}
 <div>
     <button name='button' type='submit' value="checkout" class="pure-button"> 
@@ -73,5 +74,16 @@
     </button>
 </div>
 </form>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $('#datepick').datetimepicker();
+    });
+  </script>
 {% endblock %}
 
