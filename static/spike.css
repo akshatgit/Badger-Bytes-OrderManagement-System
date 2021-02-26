@@ -1,0 +1,39 @@
+body{
+    font-family: ui-serif;
+    color: blue;
+    height: 1000px;
+    background: linear-gradient(
+    rgba(0,0,0,0.80), rgba(0,0,0,0.35),rgba(0,0,0,0.20),rgba(0,0,0,0))
+    , url("1001.jpg")no-repeat;
+    background-size: cover;
+}
+
+.box{
+    width: 900px;
+    float: right;
+    border: 1px solid black;
+}
+
+
+.box ul li{
+    width: 120px;
+    float: left;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.box ul li a{
+    text-decoration: none;
+    color: darkgray;
+}
+
+.box ul li:hover{background-color: gray;}
+.box ul li a:hover{color: white;}
+
+
+.wd{
+    text-align: center;
+    font-family: ui-serif;
+    font-size: 900px;
+}
+            
