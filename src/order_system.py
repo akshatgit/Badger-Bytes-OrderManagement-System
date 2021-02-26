@@ -33,6 +33,11 @@ class OrderSystem:
         for item in self._menus:
             print(item)
         return self._menus
+    
+    def add_item_menu(self, menutype, item, price):
+        if menutype not in self._menus:
+            return "error in menutype"
+        # self._menus[menutype].
 
     # get a menu
     def get_menu(self, menu_name: str) -> Menu:

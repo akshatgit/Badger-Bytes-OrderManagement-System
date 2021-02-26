@@ -211,11 +211,14 @@ def admin_newmenu():
 
     if request.method == 'POST':
         print(request.form)
+        menutype = request.form('menutype')
+        item = request.form('item')
+        price = abs(request.form('price'))
         # newItem = MenuItem(name=request.form['name'], image=flask.request.files.get('image', ''), price=request.form[
         #                        'price'], availability=request.form['availability'], user_id=admin.user_id)
         # # session.add(newItem)
         # session.commit()
-        flash('New menu %s item has been successfully added' % (newItem.name))
+        # flash('New menu %s item has been successfully added' % (newItem.name))
         return redirect(url_for('admin/admin_showMenu', restaurant_id=restaurant_id))
     else:
         return render_template('admin_newmenu.html')
@@ -255,10 +258,6 @@ def admin_usage():
     '''
     """Run and display various analytics reports."""
 
-    # with open('system_data.dat', 'wb') as f:
-    #     pickle.dump(data, f)
-    #     products = menu.query.all()
-    #     purchases = Purchase.query.all()
     inputFile = open('system_data.dat', 'rb')
     new_dict = pickle.load(inputFile)
     purchases_by_day = new_dict()
