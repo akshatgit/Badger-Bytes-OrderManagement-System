@@ -32,3 +32,4 @@ def account():
         form.username.data = current_user.username
 
     return render_template('account.html', form=form)
+

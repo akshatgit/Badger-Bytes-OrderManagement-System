@@ -1,0 +1,57 @@
+{% extends 'admin_base.html' %}
+{% block admin_block %}
+<div class="column is-4 is-offset-4">
+        <h3 class="title">Add Menu</h3>
+        <div class="box" style="width: 400px;">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="notification is-danger">
+                        {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+                </div>
+                {% endif %}
+                {% endwith %}
+                <form method="POST" action="/admin/newmenu">
+        
+                        <!-- <label for="Users">Choose a user account:</label> -->
+                <div class="select">
+                <select name="User" id="menuype">
+                        <option value="mains">Mains</option>
+                        <option value="sides">Sides</option>
+                        <option value="drinks">Drinks</option>
+                        <option value="sundaes">Sundaes</option>
+                </select>
+                </div>
+        
+                <br><br>
+        
+                <div class="field">
+                        <div class="control">
+                        <input class="input is-large" type="Item1" name="item1" placeholder="Item1" autofocus="">
+                        </div>
+                </div>
+        
+                <div class="field">
+                        <div class="control">
+                        <input class="input is-large" type="Price Item1" name="price1" placeholder="Item1 Price in $" autofocus="">
+                        </div>
+                </div>
+        
+                <div class="field">
+                        <div class="control">
+                        <input class="input is-large" type="Item2" name="item2" placeholder="Item2" autofocus="">
+                        </div>
+                </div>
+        
+                <div class="field">
+                        <div class="control">
+                        <input class="input is-large" type="Price Item2" name="price2" placeholder="Item2 Price in $" autofocus="">
+                        </div>
+                </div>
+        
+        
+                <button class="button is-block is-info is-large is-fullwidth">Add</button>
+                </form>
+        </div>
+        </div>
+
+{% endblock %}
