@@ -19,19 +19,32 @@ def settingspage():
     return render_template('settings.html')
 
 
-@auth.route('/settings')
+@auth.route('/settings',  methods=['GET', 'POST'])
 @login_required
 def settings():
     form = ProfileForm()
-    if form.validate_on_submit():
-        current_user.name = form.name.data
-        current_user.phone = form.phone.data
-        current_user.adress = form.adress.data
-        current_user.plateNum = form.plateNum.data
-        current_user.carDescription = form.carDescription.data
-
+    if request.method == "POST":
+        # current_user.name = form.name.data
+        # current_user.phone = form.phone.data
+        # current_user.address = form.address.data
+        # current_user.plateNum = form.plateNum.data
+        # current_user.carDescription = form.carDescription.data
+        # current_user.password = generate_password_hash(form.password.data, method='sha256')
+        current_user.name = request.form["name"]
+        current_user.phone = request.form["phone"]
+        current_user.address = request.form["address"]
+        current_user.password = generate_password_hash(request.form["password"], method='sha256')
+        current_user.plateNum = request.form["plateNum"]
+        current_user.carDescription = request.form["carDescription"]
+       
         db.session.commit()
-    return render_template('profile.html', name=current_user.name)
+    # else:
+    #     form.name.data = current_user.name
+    #     form.phone.data = current_user.phone
+    #     form.address.data = current_user.address
+    #     form.plateNum.data = current_user.plateNum
+    #     form.carDescription.data = current_user.carDescription      
+    return render_template('profile.html', name=current_user.name, form=form)
 
 @auth.route('/login', methods=['POST'])
 def login_post():
