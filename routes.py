@@ -10,6 +10,7 @@ import sys
 from init import bootstrap_system 
 import pickle
 system = bootstrap_system()
+# system.order_init()
 
 '''
 Website Structure:
@@ -81,6 +82,15 @@ def home_page():
 
     return render_template('new_order.html', system=system)
 
+
+@customer.route('/pickup', methods=["GET", "POST"])
+@login_required
+def pickup():
+    if checkACL("customer"):
+        return redirect(url_for('main.profile'))
+    print(session)
+
+    return render_template('pickup.html', system=system, name=current_user.name)
 
 '''
 Customer pages:

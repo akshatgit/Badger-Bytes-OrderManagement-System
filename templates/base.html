@@ -29,6 +29,9 @@
                             <a href="{{ url_for('customer.home_page') }}" class="navbar-item">
                                 Create New Order
                             </a>
+                            <a href="{{ url_for('customer.pickup') }}" class="navbar-item">
+                                Pick up info
+                            </a>
                             {% endif %}
 
                             {% if current_user.role == "staff" %}

@@ -11,7 +11,8 @@ Order: a class used to store information about online orders.
 class Order(object):
 
     def __init__(self, order_id: int):
-        self.order_time = datetime.now()
+        self.order_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+        self.complete_time = None
         self.customer_name = ""
         self._order_id = order_id
         self.payment = "apple"

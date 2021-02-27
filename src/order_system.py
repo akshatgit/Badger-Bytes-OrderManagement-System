@@ -5,6 +5,7 @@ from src.menu import Menu
 from src.inventory import Inventory
 from src.staff_system import StaffSystem
 from copy import deepcopy
+from datetime import datetime
 import pickle
 import math
 import sys
@@ -84,6 +85,12 @@ class OrderSystem:
     '''
     Order part
     '''
+    # Initialise Order system
+    def order_init(self):
+        self._pending_orders = []       
+        self._completed_orders = []     
+        self._norder = 0 
+        self.save_state()
 
     # Add an order into the system
     def _add_order(self, new_order: Order):
@@ -209,6 +216,7 @@ class OrderSystem:
         if order:
             if order.is_payed == True:
                 order.is_prepared  = True
+                order.complete_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
                 self._pending_orders.remove(order)
                 self._completed_orders.append(order)
             else:

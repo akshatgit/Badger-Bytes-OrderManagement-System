@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+                    <div class="column is-9">
+                        <div class="card events-card">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Orders
+                                </p>
+                                <a href="#" class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </a>
+                            </header>
+                            <div class="card-table">
+                                <div class="content">
+                                    <table class="table is-fullwidth is-striped">
+                                        <tbody>
+                                            <tr>                                                     
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Order ID, Amount</td>
+                                                <td>Payment Type</td>
+                                                <td>Customer Name</td>
+                                                <td>Order Time</td>
+                                                <td>Completed Time</td>\
+                                                <td>Status</td>
+                                                    <!-- <td class="level-right" ><a class="button is-small is-primary" >Complete Order</a></td> -->
+                                            </tr>
+                                            {% for order in system.pending_orders %}
+                                            {% if name == order.customer_name %}
+                                            <tr>                                                     
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>{{order}}</td>
+                                                <td>{{order.payment}}</td>
+                                                <td>{{order.customer_name}}</td>
+                                                <td>{{order.order_time}}</td>
+                                                <td>Soon</td>
+                                                <td>Preparing</td>
+
+                                                <!-- <td class="level-right"><a class="button is-small is-primary" value={{ order.order_id }} href="#">Complete Order</a></td> -->
+                                            </tr>
+                                            {%endif%}
+                                            {%endfor%}
+                                            {% for order in system.completed_orders %}
+                                            {% if name == order.customer_name %}
+                                            <tr>                                                     
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>{{order}}</td>
+                                                <td>{{order.payment}}</td>
+                                                <td>{{order.customer_name}}</td>
+                                                <td>{{order.order_time}}</td>
+                                                <td>{{order.complete_time}}</td>
+                                                <td>Complete</td>
+                                                <!-- <td class="level-right"><a class="button is-small is-primary" value={{ order.order_id }} href="#">Complete Order</a></td> -->
+                                            </tr>
+                                            {% endif %}
+                                            {%endfor%}
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <footer class="card-footer">
+                                <a href="#" class="card-footer-item">View All</a>
+                            </footer>
+                        </div>
+                    </div>
+
+
+
+
+
+{% endblock %}

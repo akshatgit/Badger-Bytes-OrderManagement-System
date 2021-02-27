@@ -19,6 +19,14 @@
                                 <div class="content">
                                     <table class="table is-fullwidth is-striped">
                                         <tbody>
+                                            <tr>                                                     
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Order ID, Amount</td>
+                                                <td>Payment Type</td>
+                                                <td>Customer Name</td>
+                                                <td>Order Time</td>
+                                                    <!-- <td class="level-right" ><a class="button is-small is-primary" >Complete Order</a></td> -->
+                                            </tr>
                                             {% for order in system.pending_orders %}
                                             <form method="POST" >
                                             <tr>                                                     
@@ -26,6 +34,7 @@
                                                 <td>{{order}}</td>
                                                 <td>{{order.payment}}</td>
                                                 <td>{{order.customer_name}}</td>
+                                                <td>{{order.order_time}}</td>
                                                 <td><button class="button is-small is-primary"  name='button' type='submit' value={{ order.order_id }}>Complete Order</button></td>
                                                 <!-- <td class="level-right"><a class="button is-small is-primary" value={{ order.order_id }} href="#">Complete Order</a></td> -->
                                             </tr>
@@ -60,10 +69,21 @@
                                     <div class="content">
                                         <table class="table is-fullwidth is-striped">
                                             <tbody>
+                                                <tr>                                                     
+                                                    <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                    <td>Order ID, Amount</td>
+                                                    <td>Payment Type</td>
+                                                    <td>Customer Name</td>
+                                                    <td>Completion Time</td>
+                                                        <!-- <td class="level-right" ><a class="button is-small is-primary" >Complete Order</a></td> -->
+                                                </tr>
                                                 {% for order in system.completed_orders %}
                                                 <tr>                                                     
                                                     <td width="5%"><i class="fa fa-bell-o"></i></td>
                                                     <td>{{order}}</td>
+                                                    <td>{{order.payment}}</td>
+                                                    <td>{{order.customer_name}}</td>
+                                                    <td>{{order.complete_time}}</td>
                                                         <!-- <td class="level-right" ><a class="button is-small is-primary" >Complete Order</a></td> -->
                                                 </tr>
                                                 {%endfor%}

@@ -8,23 +8,6 @@
     {% for item in menu %}
         {% if item.is_available(inventory) %}
         <li class="menu-item"> 
-            {% if item.type == "Mains" %}
-            <div class="pure-u-3-4">
-                <b>{{ item.name }}</b>          <br>
-                Base Price: ${{ item.price }}    <br>
-                Description: {{ item.description }}
-            </div>
-            <div class="pure-u-1-8">
-                <button name='mod_btn' type='submit' value="{{ item.name }}" class="button is-success is-light">
-                    <i class="fas fa-pen-square"></i>
-                    <span class="tooltiptext">create your own {{ item.name }}</span>
-                </button>
-                <button name='add_btn' type='submit' value="{{ item.name }}" class="button is-success is-light">
-                    <i class="fas fa-plus-circle"></i>
-                    <span class="tooltiptext">add one default {{ item.name }} into your oder</span>
-                </button> 
-            </div>
-            {% else %}
             <div class="pure-u-3-4">
                 <b>{{ item.name }}</b>      <br>
                 Price: ${{ item.price }}    <br>
@@ -36,7 +19,6 @@
                     <span class="tooltiptext">add one {{ item.name }} into your order</span>
                 </button> 
             </div> 
-            {% endif %}
         </li> 
         {% endif %}
     {% endfor %}
