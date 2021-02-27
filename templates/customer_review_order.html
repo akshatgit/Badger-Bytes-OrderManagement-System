@@ -38,12 +38,23 @@
     {% endfor %}
     </ul>
 {% endif %}
-<div>
-    <button name='button' type='submit' value="checkout" class="pure-button"> 
-        <i class="fas fa-money-bill"></i>
-        Checkout
-    </button>
+<div class="column is-1 is-offset-4">
+    <div class="box" style="width: 150px;">
+        <div class="field">
+            <div class="control">
+                <input class="input is-large" type="text" name="car" placeholder="Car">
+            </div>
+        </div>
+        <div>
+            <button name='button' type='submit' value="checkout" class="button"> 
+                <i class="fas fa-money-bill"></i>
+                Checkout
+            </button>
+        </div>
+    </div>
 </div>
+
+
 </form>
 {% endblock %}
 

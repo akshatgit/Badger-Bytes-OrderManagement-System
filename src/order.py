@@ -14,6 +14,7 @@ class Order(object):
         self.order_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
         self.complete_time = None
         self.customer_name = ""
+        self.car = ""
         self._order_id = order_id
         self.payment = "apple"
         # Order status fields:

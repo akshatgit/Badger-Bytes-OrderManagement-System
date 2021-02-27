@@ -10,7 +10,7 @@ import sys
 from init import bootstrap_system 
 import pickle
 system = bootstrap_system()
-# system.order_init()
+system.order_init()
 
 '''
 Website Structure:
@@ -172,7 +172,8 @@ def review_order():
     if request.method == 'POST':
         if request.form["button"] == "checkout":
             order_id = session['order_ID']
-            error = system.checkout(order_id)
+            car = request.form.get('car')
+            error = system.checkout(order_id, car)
             if error:
                 return render_template("error.html", error=error)
             session.pop('order_ID')

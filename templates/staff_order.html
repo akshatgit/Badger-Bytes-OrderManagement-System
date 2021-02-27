@@ -75,6 +75,7 @@
                                                     <td>Payment Type</td>
                                                     <td>Customer Name</td>
                                                     <td>Completion Time</td>
+                                                    <td>Pickup Car</td>
                                                         <!-- <td class="level-right" ><a class="button is-small is-primary" >Complete Order</a></td> -->
                                                 </tr>
                                                 {% for order in system.completed_orders %}
@@ -84,6 +85,7 @@
                                                     <td>{{order.payment}}</td>
                                                     <td>{{order.customer_name}}</td>
                                                     <td>{{order.complete_time}}</td>
+                                                    <td>{{order.car}}</td>
                                                         <!-- <td class="level-right" ><a class="button is-small is-primary" >Complete Order</a></td> -->
                                                 </tr>
                                                 {%endfor%}

@@ -151,6 +151,7 @@ class OrderSystem:
     # Add items into an order
     def add_items_in_orders(self, order_id: int, *argv: Item):
         order = self._get_pendingorder(order_id)
+        # print(order)
         for item in argv:
             if not item.is_available(self._inventory):
                 print(f"{item.name} is not available!", file=sys.stderr)
@@ -234,9 +235,11 @@ class OrderSystem:
             print(complete_orders)
 
     
-    def checkout(self, order_id: int) -> str:
+    def checkout(self, order_id: int, car) -> str:
         # check order
+        
         order = self._get_pendingorder(order_id)
+        order.car = car
         if not order:
             print("Order does not exist")
             return "Order does not exist"
