@@ -6,7 +6,6 @@
 <form method="POST">
     <ul class="menu pure-u-1-2">
     {% for item in menu %}
-        {% if item.is_available(inventory) %}
         <li class="menu-item"> 
             <div class="pure-u-3-4">
                 <b>{{ item.name }}</b>      <br>
@@ -20,7 +19,6 @@
                 </button> 
             </div> 
         </li> 
-        {% endif %}
     {% endfor %}
     </ul>
 </form>

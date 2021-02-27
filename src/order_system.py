@@ -1,5 +1,5 @@
 from src.ingredient import Ingredient, isNaN
-from src.item import Item, Burger, Wrap, Side, Drink
+from src.item import Item, Burger, Wrap, Side, Drink, Main
 from src.order import Order
 from src.menu import Menu
 from src.inventory import Inventory
@@ -32,29 +32,38 @@ class OrderSystem:
     '''
     def get_menulist(self):
         for item in self._menus:
+            print(type(item))
             print(item)
+            print(self._menus[item]) 
+            print(type(self._menus[item]))
         return self._menus
     
     def add_item_menu(self, menutype, item, price):
         if menutype not in self._menus:
-            return "error in menutype"
+            print("error in menutype")
         else:
             # self._menus[menutype].item
-            item_obj = Item(item, price, menutype)
-            self._menus[menutype].append(item)
+            # print(menutype)
+            item_obj = Item(name = item, price = float(price), type=menutype)
+            # self._menus[menutype].display
+            # print("=========")
+            # for i in self._menus[menutype]:
+                # print(i)
+
+            self._menus[menutype].add_items(item_obj)
+            print(self._menus[menutype].display())
+            print(self._menus[menutype])
             self.save_state() 
-            for i in self._menus[menutype]:
-                print(i)
 
-
-    def delete_item_menu(self, menutype, item):
-        for menutype in self._menus:
-            if item not in self._items:
-                return "error item doesn't exist"
-            else:
-                self._menus[menutype].remove(item)
-                self.save_state()
+    def delete_item_menu(self, item):
+        print(item)
+        self._menus[item.type].del_items(item)
+        self.save_state() 
     
+    def update_item_menu(self, item, new_price):
+        print(item)
+        self._menus[item.type].upd_items(item, new_price)
+        self.save_state() 
 
     # get a menu
     def get_menu(self, menu_name: str) -> Menu:

@@ -10,7 +10,7 @@ import sys
 from init import bootstrap_system 
 import pickle
 system = bootstrap_system()
-system.order_init()
+# system.order_init()
 
 '''
 Website Structure:
@@ -49,7 +49,7 @@ customer = Blueprint('customer', __name__)
 staff = Blueprint('staff', __name__)
 admin = Blueprint('admin', __name__)
 system = bootstrap_system()
-print(system.get_menulist())
+# print(system.get_menulist())
 
 def checkACL(role):
     print(role)
@@ -266,8 +266,8 @@ def admin_newmenu():
         print(request.form)
         price = abs(int(request.form.get('price')))
         system.add_item_menu(menutype, item, price) 
-        flash('New menu %s item has been successfully added' % (item))
-        return redirect(url_for('admin/admin_showMenu'))
+        # flash('New menu %s item has been successfully added' % (item))
+        return redirect(url_for('admin.admin_home_page'))
     else:
         return render_template('admin_newmenu.html')
 
@@ -277,12 +277,6 @@ def admin_newmenu():
 def admin_modify():
     if checkACL("admin"):
         return redirect(url_for('main.profile'))
-    if request.method == 'POST':
-        print(request.form)
-        # for name, amount in request.form.items():
-        #     if amount:
-        #         system.inventory.update_stock(name, float(amount))
-        # system.save_state()
     
     return render_template('admin_modify.html', system=system)
 
@@ -293,17 +287,18 @@ def modify_menu(menu_name):
     if checkACL("admin"):
         return redirect(url_for('main.profile'))
     check_order_in_session()
-    menutype = request.form['menutype']
-    item = request.form['item']
-    price = request.form['price']
     if request.method == 'POST':
         if "del_btn" in request.form.keys():
-            system.delete_item_menu(menutype, item)
+            item = system.get_item(request.form["del_btn"])
+            system.delete_item_menu(item)            
             print("delete button")
             flash('Menu item has been deleted successfully.')
         elif "upd_btn" in request.form.keys():
-            system.add_item_menu(menutype, item, price)
+            item = system.get_item(request.form["upd_btn"])
+            value = float(abs(int(request.form.get(item.name))))
             print("update button")
+            print(value)
+            system.update_item_menu(item,value)
             flash('Menu item has been updated successfully.')
     menu = system.get_menu(menu_name)
     if not menu:

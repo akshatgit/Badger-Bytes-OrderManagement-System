@@ -38,6 +38,9 @@ class Item(object):
         self._uuid = ''
                                # error messages
     # add ingredients into the item
+    def set_price(self, price):
+        self._price = price
+
     def add_ingredients(self, *argv: Ingredient):
         for ingredient in argv:
             self._ingredients[ingredient.name] = ingredient

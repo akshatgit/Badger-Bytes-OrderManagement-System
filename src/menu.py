@@ -18,6 +18,18 @@ class Menu:
         for item in argv:
             self._items[item.name] = item
             self._nitems += 1
+    
+    # del item by its nam
+    def del_items(self, *argv: Item):
+        for item in argv:
+            del self._items[item.name]
+            self._nitems -= 1
+
+    # upd item by its nam
+    def upd_items(self, Item, value):
+        self._items[Item.name]._price = value
+        if self._items[Item.name]._total_price:
+            self._items[Item.name]._total_price = value
 
     # get an item by its name
     def get_item(self, item_name: str) -> Item:
