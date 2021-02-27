@@ -59,6 +59,11 @@ python3 -m venv en
  ```bash
 deactivate
 ```
+## Run Server
+```shell
+python run.py
+```
+
 
 ## Seeing All Data
 ```python
