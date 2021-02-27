@@ -9,6 +9,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     role = db.Column(db.String(100), default="customer")
+    payment = db.Column(db.String(100), default="apple")
+    
     phone = db.Column(db.String(100), nullable=True)
     address = db.Column(db.String(1000), nullable=True)
     name = db.Column(db.String(1000))

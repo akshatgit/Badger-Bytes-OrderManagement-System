@@ -16,6 +16,19 @@
         {% endwith %}
         <form method="POST" action="/settings">
             <div class="field">
+            <div class="control">
+            <div class="select">
+                <!-- <a>Payment Method</a> -->
+                <select name="payment" id="payment">
+                  <option value="paypal">Paypal</option>
+                  <option value="strip">Strip</option>
+                  <option value="apple Staff">Apple Pay</option>
+                 
+                </select>
+              </div>
+            </div>
+            </div>
+            <div class="field">
                 <div class="control">
                     <input class="input is-large" type="tel" name="Phone Number" autofocus="" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required placeholder="123-456-7890">
                 </div>
@@ -38,7 +51,7 @@
                     <input class="input is-large" type="password" name="password" placeholder="Password">
                 </div>
             </div>
-
+            
             <button class="button is-block is-info is-large is-fullwidth">Update</button>
         </form>
     </div>
