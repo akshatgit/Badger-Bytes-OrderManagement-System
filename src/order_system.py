@@ -37,7 +37,23 @@ class OrderSystem:
     def add_item_menu(self, menutype, item, price):
         if menutype not in self._menus:
             return "error in menutype"
-        # self._menus[menutype].
+        else:
+            # self._menus[menutype].item
+            item_obj = Item(item, price, menutype)
+            self._menus[menutype].append(item)
+            self.save_state() 
+            for i in self._menus[menutype]:
+                print(i)
+
+
+    def delete_item_menu(self, menutype, item):
+        for menutype in self._menus:
+            if item not in self._items:
+                return "error item doesn't exist"
+            else:
+                self._menus[menutype].remove(item)
+                self.save_state()
+    
 
     # get a menu
     def get_menu(self, menu_name: str) -> Menu:

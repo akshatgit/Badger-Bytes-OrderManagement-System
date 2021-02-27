@@ -2,7 +2,7 @@
 # from flask import Blueprint, render_template
 # from flask_login import login_required, current_user
 
-from flask import render_template, request, redirect, url_for, abort, session, Blueprint
+from flask import render_template, request, redirect, url_for, abort, session, Blueprint, flash
 from server import app
 from datetime import datetime
 from src.ingredient import Ingredient
@@ -210,77 +210,45 @@ def admin_showMenu():
 def admin_newmenu(): 
 
     if request.method == 'POST':
+        menutype = request.form.get('menutype')
+        item = request.form.get('item')
         print(request.form)
-        menutype = request.form('menutype')
-        item = request.form('item')
-        price = abs(request.form('price'))
-        # newItem = MenuItem(name=request.form['name'], image=flask.request.files.get('image', ''), price=request.form[
-        #                        'price'], availability=request.form['availability'], user_id=admin.user_id)
-        # # session.add(newItem)
-        # session.commit()
-        # flash('New menu %s item has been successfully added' % (newItem.name))
-        return redirect(url_for('admin/admin_showMenu', restaurant_id=restaurant_id))
+        price = abs(int(request.form.get('price')))
+        system.add_item_menu(menutype, item, price) 
+        flash('New menu %s item has been successfully added' % (item))
+        return redirect(url_for('admin/admin_showMenu'))
     else:
         return render_template('admin_newmenu.html')
 
+
 @admin.route('/admin/modify', methods=["GET", "POST"])
 def admin_modify():
-    if request.method == 'POST':
-        print(request.form)
-        # for name, amount in request.form.items():
-        #     if amount:
-        #         system.inventory.update_stock(name, float(amount))
-        # system.save_state()
-    
     return render_template('admin_modify.html', system=system)
 
 
 @admin.route('/admin/modify/<menu_name>', methods=["GET", "POST"])
 def modify_menu(menu_name):
     check_order_in_session()
-    
+    menutype = request.form['menutype']
+    item = request.form['item']
+    price = request.form['price']
     if request.method == 'POST':
         if "del_btn" in request.form.keys():
-            # TODO
+            system.delete_item_menu(menutype, item)
             print("delete button")
+            flash('Menu item has been deleted successfully.')
         elif "upd_btn" in request.form.keys():
-            # TOD
+            system.add_item_menu(menutype, item, price)
             print("update button")
-    
+            flash('Menu item has been updated successfully.')
     menu = system.get_menu(menu_name)
     if not menu:
-        
         return redirect(url_for('page_not_found'))
-
     return render_template('admin_menu_list.html', menu_name=menu_name, menu=menu.display(), inventory=system.inventory)
-    
-
-    # '''
-    # editedItem = session.query(menu_name).filter_by(id=menu_id).one()
-    # if request.method == 'POST':
-    #     if request.form['name']:
-    #         editedItem.name = request.form['name']
-    #     if request.form['image']:
-    #         editedItem.image = flask.request.files.get('image', '')
-    #     if request.form['price']:
-    #         editedItem.price = request.form['price']
-    #     if request.form['availability']:
-    #         editedItem.course = request.form['availability']
-    #     session.add(editedItem)
-    #     session.commit()
-    #     flash('Menu item has been changed successfully.')
-    #     return redirect(url_for('admin/admin_showMenu'))
-    # else:
-    #     return render_template('admin_modify.html', menu_id=menu_id, item=editedItem)
-    #     '''
-
-
 
 @admin.route('/admin/usage', methods=["GET", "POST"])
 def admin_usage():
-
     # TODO FROM BELOW
-
     '''
     """Run and display various analytics reports."""
 
