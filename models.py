@@ -10,7 +10,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100))
     role = db.Column(db.String(100), default="customer")
     payment = db.Column(db.String(100), default="apple")
-    
+
     phone = db.Column(db.String(100), nullable=True)
     address = db.Column(db.String(1000), nullable=True)
     name = db.Column(db.String(1000))
@@ -38,5 +38,6 @@ class User(UserMixin, db.Model):
                           email=self.email,
                           phone=self.phone,
                           password=self.password,
-                          role=self.role)
+                          role=self.role,
+                          payment=self.payment)
         # return '<Name %r, email %r, phone %r, role %r, address %r, >' % self.name, self.email, self.phone, self.role, self.address
