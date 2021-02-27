@@ -1,6 +1,7 @@
 from src.item import Item, Burger, Wrap, Side, Drink
 from src.inventory import Inventory
 from src.ingredient import Ingredient, isNaN
+from datetime import datetime
 from copy import deepcopy
 '''
 Order: a class used to store information about online orders.
@@ -10,10 +11,12 @@ Order: a class used to store information about online orders.
 class Order(object):
 
     def __init__(self, order_id: int):
+        self.order_time = datetime.now()
+        self.customer_name = ""
         self._order_id = order_id
-
+        self.payment = "apple"
         # Order status fields:
-        self._is_payed = False            # boolean, whether it is payed or not
+        self._is_payed = True            # boolean, whether it is payed or not
         self._is_prepared = False       # boolean, whether it is prepared or not
 
         # Customized fields:
@@ -24,6 +27,11 @@ class Order(object):
         # string, some special notes by the customer
         self._notes = ''
 
+    def set_payement(self, payment):
+        self.payment = payment
+    
+    def get_payment(self):
+        return self.payment
 
     # if Order is payed
     def update_payment_status(self, status: bool):

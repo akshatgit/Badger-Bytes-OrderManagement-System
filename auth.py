@@ -2,7 +2,7 @@
 
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from models import User
 from server import db
 
@@ -13,10 +13,22 @@ auth = Blueprint('auth', __name__)
 def login():
     return render_template('login.html')
 
-@auth.route('/settings')
+@auth.route('/settings', methods=["GET", "POST"])
 @login_required
-def settings():
-    return render_template('settings.html')
+def settings(): 
+    if request.method == 'POST':
+        print(request.form)
+        user = User.query.filter_by(email=current_user.email).first()
+
+        user.name = request.form.get('name')
+        user.phone = request.form.get('Phone Number')
+        user.address = request.form.get('address')
+        user.password = generate_password_hash(request.form.get('password'),method='sha256')
+        user.payment = request.form.get('payment')
+        db.session.commit()
+        return redirect(url_for('main.profile'))
+    else:
+        return render_template('settings.html')
 
 @auth.route('/login', methods=['POST'])
 def login_post():
@@ -52,6 +64,7 @@ def signup_post():
     role = request.form.get('User')
     address = request.form.get('Address')
     phone = request.form.get('Phone Number')
+    payment = request.form.get('payment')
     print(request.form)
     print(role)
     user = User.query.filter_by(email=email).first() # if this returns a user, then the email already exists in database

@@ -109,9 +109,11 @@ class OrderSystem:
 
 
     # Make a new online order, add it into the system, and then return the order id
-    def make_order(self) -> int:
+    def make_order(self, payment, customer_name) -> int:
         new_orderID = self._norder + 1
         new_order = Order(new_orderID)
+        new_order.set_payement(payment)
+        new_order.customer_name = customer_name
         self._norder += 1
         self._add_order(new_order)
         return new_orderID

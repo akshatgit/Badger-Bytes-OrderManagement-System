@@ -24,6 +24,8 @@
                                             <tr>                                                     
                                                 <td width="5%"><i class="fa fa-bell-o"></i></td>
                                                 <td>{{order}}</td>
+                                                <td>{{order.payment}}</td>
+                                                <td>{{order.customer_name}}</td>
                                                 <td><button class="button is-small is-primary"  name='button' type='submit' value={{ order.order_id }}>Complete Order</button></td>
                                                 <!-- <td class="level-right"><a class="button is-small is-primary" value={{ order.order_id }} href="#">Complete Order</a></td> -->
                                             </tr>
