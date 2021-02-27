@@ -292,14 +292,14 @@ def modify_menu(menu_name):
             item = system.get_item(request.form["del_btn"])
             system.delete_item_menu(item)            
             print("delete button")
-            flash('Menu item has been deleted successfully.')
+            # flash('Menu item has been deleted successfully.')
         elif "upd_btn" in request.form.keys():
             item = system.get_item(request.form["upd_btn"])
             value = float(abs(int(request.form.get(item.name))))
             print("update button")
             print(value)
             system.update_item_menu(item,value)
-            flash('Menu item has been updated successfully.')
+            # flash('Menu item has been updated successfully.')
     menu = system.get_menu(menu_name)
     if not menu:
         return redirect(url_for('page_not_found'))
@@ -311,30 +311,10 @@ def admin_usage():
     if checkACL("admin"):
         return redirect(url_for('main.profile'))
 
-    # TODO FROM BELOW
-    '''
-    """Run and display various analytics reports."""
+    if request.method == 'POST':
+        print("button")
+        order_id = int(request.form['button'])
+        system.update_order(order_id)
+        system.save_state() 
 
-    inputFile = open('system_data.dat', 'rb')
-    new_dict = pickle.load(inputFile)
-    purchases_by_day = new_dict()
-    for purchase in purchases:
-        purchase_date = purchase.sold_at.date().strftime('%m-%d')
-        if purchase_date not in purchases_by_day:
-            purchases_by_day[purchase_date] = {'units': 0, 'sales': 0.0}
-        purchases_by_day[purchase_date]['units'] += 1
-        purchases_by_day[purchase_date]['sales'] += purchase.product.price
-    purchase_days = sorted(purchases_by_day.keys())
-    units = len(purchases)
-    total_sales = sum([p.product.price for p in purchases])
-
-
-    return render_template('admin_usage.html',
-                            products=products,
-                            purchase_days=purchase_days,
-                            purchases=purchases,
-                            purchases_by_day=purchases_by_day,
-                            units=units,
-                            total_sales=total_sales)
-
-'''
+    return render_template('staff_order.html', system=system)
